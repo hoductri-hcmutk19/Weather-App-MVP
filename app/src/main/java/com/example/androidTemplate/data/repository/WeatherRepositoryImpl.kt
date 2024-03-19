@@ -37,7 +37,6 @@ class WeatherRepositoryImpl(private val context: Context) : WeatherRepository {
             callback.onRequestSuccess(cityList)     //let presenter know the city list
 
         } catch (e: IOException) {
-            e.printStackTrace()
             callback.onRequestFailed(e.localizedMessage!!)  //let presenter know about failure
         }
 

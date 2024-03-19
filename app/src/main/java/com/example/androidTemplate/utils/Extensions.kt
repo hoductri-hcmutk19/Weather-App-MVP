@@ -1,6 +1,8 @@
 package com.example.androidTemplate.utils
 
 import com.example.androidTemplate.data.model.remoteData.City
+import com.example.androidTemplate.utils.Constant.KELVIN_TO_CELSIUS_NUMBER
+import com.example.androidTemplate.utils.Constant.MPS_TO_KMPH_NUMBER
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,13 +77,11 @@ fun MutableList<City>.convertToListOfCityName() : MutableList<String> {
  * T(°C) = 300K - 273.15 = 26.85 °C
  */
 fun Double.kelvinToCelsius() : Int {
-    val differenceNumber: Double = 273.15
-    return  (this - differenceNumber).toInt()
+    return  (this - KELVIN_TO_CELSIUS_NUMBER).toInt()
 }
 
 fun Double.mpsToKmph() : Int {
-    val coefficient: Double = 3.6
-    return  (this * coefficient).toInt()
+    return  (this * MPS_TO_KMPH_NUMBER).toInt()
 }
 
 
