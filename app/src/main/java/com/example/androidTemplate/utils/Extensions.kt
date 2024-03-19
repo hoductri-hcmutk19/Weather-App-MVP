@@ -15,7 +15,7 @@ fun Int.unixTimestampToDateTimeString() : String {
         return outputDateFormat.format(calendar.time)
 
     } catch (e: Exception) {
-        e.printStackTrace()
+        println(e)
     }
 
     return this.toString()
@@ -32,7 +32,7 @@ fun Int.unixTimestampToDateString() : String {
         return outputDateFormat.format(calendar.time)
 
     } catch (e: Exception) {
-        e.printStackTrace()
+        println(e)
     }
 
     return this.toString()
@@ -49,7 +49,7 @@ fun Int.unixTimestampToTimeString() : String {
         return outputDateFormat.format(calendar.time)
 
     } catch (e: Exception) {
-        e.printStackTrace()
+        println(e)
     }
 
     return this.toString()
@@ -75,11 +75,13 @@ fun MutableList<City>.convertToListOfCityName() : MutableList<String> {
  * T(°C) = 300K - 273.15 = 26.85 °C
  */
 fun Double.kelvinToCelsius() : Int {
-
-    return  (this - 273.15).toInt()
+    val differenceNumber = 273.15
+    return  (this - differenceNumber).toInt()
 }
 
 fun Double.mpsToKmph() : Int {
-
-    return  (this * 3.6).toInt()
+    val coefficient = 3.6
+    return  (this * coefficient).toInt()
 }
+
+

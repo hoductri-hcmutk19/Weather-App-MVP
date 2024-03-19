@@ -10,5 +10,11 @@ data class City(
         val name: String = "",
         @SerializedName("country")
         val country: String = ""
-): Serializable
+): Serializable {
+        companion object {
+                const val serialVersionUID = 1L
+        }
+}
+
+
 

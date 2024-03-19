@@ -56,7 +56,8 @@ class WeatherRepositoryImpl(private val context: Context) : WeatherRepository {
             // if retrofit network call success, this method will be triggered
             override fun onResponse(call: Call<CurrentWeatherResponse>, response: Response<CurrentWeatherResponse>) {
                 if (response.body() != null)
-                    callback.onRequestSuccess(response.body()!!) //let presenter know the current weather information data
+                //let presenter know the current weather information data
+                    callback.onRequestSuccess(response.body()!!)
                 else
                     callback.onRequestFailed(response.message()) //let presenter know about failure
             }
@@ -67,6 +68,8 @@ class WeatherRepositoryImpl(private val context: Context) : WeatherRepository {
             }
 
         })
+
+
     }
 
 }
