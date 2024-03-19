@@ -14,7 +14,7 @@ fun Int.unixTimestampToDateTimeString() : String {
         outputDateFormat.timeZone = TimeZone.getDefault() // user's default time zone
         return outputDateFormat.format(calendar.time)
 
-    } catch (e: Exception) {
+    } catch (e: IllegalArgumentException) {
         println(e)
     }
 
@@ -31,7 +31,7 @@ fun Int.unixTimestampToDateString() : String {
         outputDateFormat.timeZone = TimeZone.getDefault() // user's default time zone
         return outputDateFormat.format(calendar.time)
 
-    } catch (e: Exception) {
+    } catch (e: IllegalArgumentException) {
         println(e)
     }
 
@@ -48,7 +48,7 @@ fun Int.unixTimestampToTimeString() : String {
         outputDateFormat.timeZone = TimeZone.getDefault()
         return outputDateFormat.format(calendar.time)
 
-    } catch (e: Exception) {
+    } catch (e: IllegalArgumentException) {
         println(e)
     }
 
@@ -75,12 +75,12 @@ fun MutableList<City>.convertToListOfCityName() : MutableList<String> {
  * T(°C) = 300K - 273.15 = 26.85 °C
  */
 fun Double.kelvinToCelsius() : Int {
-    val differenceNumber = 273.15
+    val differenceNumber: Double = 273.15
     return  (this - differenceNumber).toInt()
 }
 
 fun Double.mpsToKmph() : Int {
-    val coefficient = 3.6
+    val coefficient: Double = 3.6
     return  (this * coefficient).toInt()
 }
 
