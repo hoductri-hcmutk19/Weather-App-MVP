@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.bumptech.glide.Glide
-import com.example.androidTemplate.data.model.remoteData.City
-import com.example.androidTemplate.data.model.CurrentWeatherModel
+import com.example.androidTemplate.data.model.City
+import com.example.androidTemplate.data.model.CurrentWeatherData
 import com.example.androidTemplate.data.repository.WeatherRepository
-import com.example.androidTemplate.data.repository.WeatherRepositoryImpl
+import com.example.androidTemplate.data.repository.source.local.WeatherLocalDataSource
+import com.example.androidTemplate.data.repository.source.remote.WeatherRemoteDataSource
 import com.example.androidTemplate.databinding.ActivityMainBinding
 import com.example.androidTemplate.screen.presenter.WeatherInfoShowPresenter
 import com.example.androidTemplate.screen.presenter.WeatherInfoShowPresenterImpl
@@ -18,7 +18,7 @@ import com.example.androidTemplate.utils.convertToListOfCityName
 class MainActivity : AppCompatActivity(), MainActivityView {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    private lateinit var model: WeatherRepository
+    private var model = WeatherRepository
     private lateinit var presenter: WeatherInfoShowPresenter
 
     private var cityList: MutableList<City> = mutableListOf()
@@ -28,8 +28,13 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         setContentView(binding.root)
 
         // initialize model and presenter
-        model = WeatherRepositoryImpl(applicationContext)
-        presenter = WeatherInfoShowPresenterImpl(this, model)
+        presenter = WeatherInfoShowPresenterImpl(
+            this,
+            model.getInstance(
+                WeatherRemoteDataSource.getInstance(),
+                WeatherLocalDataSource.getInstance()
+            )
+        )
 
         // call for fetching city list
         presenter.fetchCityList()
@@ -91,16 +96,16 @@ class MainActivity : AppCompatActivity(), MainActivityView {
      * Activity/View doesn't know anything about the data source of weather API.
      * Only model knows about the data source of weather API.
      */
-    override fun onWeatherInfoFetchSuccess(currentWeatherModel: CurrentWeatherModel) {
+    override fun onWeatherInfoFetchSuccess(currentWeather: CurrentWeatherData) {
         binding.outputGroup.visibility = View.VISIBLE
         binding.tvErrorMessage.visibility = View.GONE
 
-        binding.layoutWeatherBasic.tvDateTime.text = "Today, ${currentWeatherModel.dateTime}"
-        binding.layoutWeatherBasic.tvTemperature.text = currentWeatherModel.temperature
+        binding.layoutWeatherBasic.tvDateTime.text = "Today, ${currentWeather.dateTime}"
+        binding.layoutWeatherBasic.tvTemperature.text = currentWeather.temperature
         //Glide.with(this).load(currentWeatherModel.weatherConditionIconUrl).into(binding.icWeather)
-        binding.layoutWeatherBasic.tvMainCondition.text = currentWeatherModel.weatherMainCondition
-        binding.layoutWeatherBasic.tvWindValue.text = "${currentWeatherModel.windSpeed} km/h"
-        binding.layoutWeatherBasic.tvHumidityValue.text = currentWeatherModel.humidity
+        binding.layoutWeatherBasic.tvMainCondition.text = currentWeather.weatherMainCondition
+        binding.layoutWeatherBasic.tvWindValue.text = "${currentWeather.windSpeed} km/h"
+        binding.layoutWeatherBasic.tvHumidityValue.text = currentWeather.humidity
 
         binding.layoutWeatherBasic.tvWind.text = "Wind"
         binding.layoutWeatherBasic.tvHumidity.text = "Hum"
@@ -117,5 +122,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         binding.tvErrorMessage.text = errorMessage
     }
 }
+
+
 
 

@@ -6,3 +6,5 @@ interface WeatherInfoShowPresenter {
     fun detachView()
 }
 
+
+

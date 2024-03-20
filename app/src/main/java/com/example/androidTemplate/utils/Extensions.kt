@@ -1,6 +1,6 @@
 package com.example.androidTemplate.utils
 
-import com.example.androidTemplate.data.model.remoteData.City
+import com.example.androidTemplate.data.model.City
 import com.example.androidTemplate.utils.Constant.KELVIN_TO_CELSIUS_NUMBER
 import com.example.androidTemplate.utils.Constant.MPS_TO_KMPH_NUMBER
 import java.text.SimpleDateFormat
@@ -83,5 +83,7 @@ fun Double.kelvinToCelsius() : Int {
 fun Double.mpsToKmph() : Int {
     return  (this * MPS_TO_KMPH_NUMBER).toInt()
 }
+
+
 
 

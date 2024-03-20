@@ -1,9 +1,9 @@
 package com.example.androidTemplate.screen.presenter
 
 import android.view.View
-import com.example.androidTemplate.data.model.remoteData.City
-import com.example.androidTemplate.data.model.CurrentWeatherModel
-import com.example.androidTemplate.data.model.CurrentWeatherResponse
+import com.example.androidTemplate.data.model.City
+import com.example.androidTemplate.data.model.CurrentWeather
+import com.example.androidTemplate.data.model.CurrentWeatherData
 import com.example.androidTemplate.data.repository.WeatherRepository
 import com.example.androidTemplate.screen.MainActivityView
 import com.example.androidTemplate.screen.RequestCompleteListener
@@ -18,7 +18,7 @@ class WeatherInfoShowPresenterImpl(
 
     override fun fetchCityList() {
 
-        model.getCityList(object : RequestCompleteListener<MutableList<City>> {
+        model.getCityLocal(object : RequestCompleteListener<MutableList<City>> {
 
             // if successfully fetch the city_list data
             override fun onRequestSuccess(data: MutableList<City>) {
@@ -36,26 +36,26 @@ class WeatherInfoShowPresenterImpl(
 
         view?.handleProgressBarVisibility(View.VISIBLE) // let view know about progress bar visibility
 
-        model.getWeatherInformation(cityId, object : RequestCompleteListener<CurrentWeatherResponse> {
+        model.getWeather(cityId, object : RequestCompleteListener<CurrentWeather> {
 
             // if successfully fetch the data
-            override fun onRequestSuccess(data: CurrentWeatherResponse) {
+            override fun onRequestSuccess(data: CurrentWeather) {
 
                 view?.handleProgressBarVisibility(View.GONE) // let view know about progress bar visibility
 
                 // data formatting to show on UI
-                val currentWeatherModel = CurrentWeatherModel(
-                    dateTime = data.dt.unixTimestampToDateString(),
-                    temperature = data.main.temp.kelvinToCelsius().toString(),
-                    cityAndCountry = "${data.name}, ${data.sys.country}",
-                    weatherConditionIconUrl = "https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png",
-                    weatherConditionIconDescription = data.weather[0].description,
-                    weatherMainCondition = data.weather[0].main,
-                    humidity = "${data.main.humidity}%",
-                    windSpeed = data.wind.speed.mpsToKmph().toString()
+                val currentWeather = CurrentWeatherData(
+                    dateTime = data.dateTime.unixTimestampToDateString(),
+                    temperature = data.temperature.kelvinToCelsius().toString(),
+                    cityAndCountry = data.city + data.country,
+                    weatherConditionIconUrl = "https://openweathermap.org/img/wn/${data.weatherConditionIconUrl}@2x.png",
+                    weatherConditionIconDescription = data.weatherConditionIconDescription,
+                    weatherMainCondition = data.weatherMainCondition,
+                    humidity = "${data.humidity}%",
+                    windSpeed = data.windSpeed.mpsToKmph().toString()
                 )
 
-                view?.onWeatherInfoFetchSuccess(currentWeatherModel)   //let view know the formatted weather data
+                view?.onWeatherInfoFetchSuccess(currentWeather)   //let view know the formatted weather data
             }
 
             // if failed to fetch data
@@ -71,4 +71,6 @@ class WeatherInfoShowPresenterImpl(
         view = null
     }
 }
+
+
 
