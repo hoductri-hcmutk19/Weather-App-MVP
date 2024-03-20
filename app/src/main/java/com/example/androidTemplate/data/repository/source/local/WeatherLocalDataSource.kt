@@ -5,17 +5,17 @@ import com.example.androidTemplate.data.repository.source.WeatherDataSource
 import com.example.androidTemplate.screen.RequestCompleteListener
 import java.io.IOException
 
-class WeatherLocalDataSource() : WeatherDataSource.Local {
+class WeatherLocalDataSource : WeatherDataSource.Local {
 
     override fun getCityLocal(listener: RequestCompleteListener<MutableList<City>>) {
         try {
             val cityList: MutableList<City> = mutableListOf()
 
-            cityList.add(City(1566083,"Hồ Chí Minh","VN"))
-            cityList.add(City(1565022,"Thủ Dầu Một","VN"))
-            cityList.add(City(1581130,"Hà Nội","VN"))
-            cityList.add(City(2643123,"Manchester","GB"))
-            cityList.add(City(524901,"Moscow","RU"))
+            cityList.add(City(HCM,"Hồ Chí Minh","VN"))
+            cityList.add(City(TDM,"Thủ Dầu Một","VN"))
+            cityList.add(City(HN,"Hà Nội","VN"))
+            cityList.add(City(MT,"Manchester","GB"))
+            cityList.add(City(MC,"Moscow","RU"))
 
             listener.onRequestSuccess(cityList)     //let presenter know the city list
 
@@ -26,6 +26,12 @@ class WeatherLocalDataSource() : WeatherDataSource.Local {
     }
 
     companion object {
+        private const val HCM = 1566083
+        private const val TDM = 1565022
+        private const val HN = 1581130
+        private const val MT = 2643123
+        private const val MC = 524901
+
         private var instance: WeatherLocalDataSource? = null
 
         fun getInstance() = synchronized(this) {

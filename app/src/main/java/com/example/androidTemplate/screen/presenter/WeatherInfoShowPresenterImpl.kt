@@ -48,7 +48,8 @@ class WeatherInfoShowPresenterImpl(
                     dateTime = data.dateTime.unixTimestampToDateString(),
                     temperature = data.temperature.kelvinToCelsius().toString(),
                     cityAndCountry = data.city + data.country,
-                    weatherConditionIconUrl = "https://openweathermap.org/img/wn/${data.weatherConditionIconUrl}@2x.png",
+                    weatherConditionIconUrl =
+                    "https://openweathermap.org/img/wn/${data.weatherConditionIconUrl}@2x.png",
                     weatherConditionIconDescription = data.weatherConditionIconDescription,
                     weatherMainCondition = data.weatherMainCondition,
                     humidity = "${data.humidity}%",

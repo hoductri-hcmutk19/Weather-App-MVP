@@ -13,10 +13,17 @@ class ParseJson {
             city = it.getString(WeatherEntry.CITY)
             country = it.getJSONObject(WeatherEntry.SYS).getString(WeatherEntry.COUNTRY)
             weatherConditionIconUrl =
-                it.getJSONArray(WeatherEntry.WEATHER).getJSONObject(0).getString(WeatherEntry.WEATHER_CONDITION_ICON_URL)
+                it.getJSONArray(WeatherEntry.WEATHER)
+                    .getJSONObject(0)
+                    .getString(WeatherEntry.WEATHER_CONDITION_ICON_URL)
             weatherConditionIconDescription =
-                it.getJSONArray(WeatherEntry.WEATHER).getJSONObject(0).getString(WeatherEntry.WEATHER_CONDITION_ICON_DESCRIPTION)
-            weatherMainCondition = it.getJSONArray(WeatherEntry.WEATHER).getJSONObject(0).getString(WeatherEntry.WEATHER_MAIN_CONDITION)
+                it.getJSONArray(WeatherEntry.WEATHER)
+                    .getJSONObject(0)
+                    .getString(WeatherEntry.WEATHER_CONDITION_ICON_DESCRIPTION)
+            weatherMainCondition =
+                it.getJSONArray(WeatherEntry.WEATHER)
+                    .getJSONObject(0)
+                    .getString(WeatherEntry.WEATHER_MAIN_CONDITION)
             humidity = it.getJSONObject(WeatherEntry.MAIN).getInt(WeatherEntry.HUMIDITY)
             windSpeed = it.getJSONObject(WeatherEntry.WIND).getDouble(WeatherEntry.WIND_SPEED)
         }
