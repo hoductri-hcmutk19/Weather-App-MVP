@@ -1,0 +1,73 @@
+[
+  {
+    "id": 1566083,
+    "name": "Hồ Chí Minh",
+    "country": "VN",
+    "lon": 106.666672,
+    "lat": 10.75
+  },
+  {
+    "id": 1565022,
+    "name": "Thủ Dầu Một",
+    "country": "VN",
+    "lon": 106.650002,
+    "lat": 10.96667
+  },
+  {
+    "id": 1581130,
+    "name": "Hà Nội",
+    "country": "VN",
+    "lon": 105.841171,
+    "lat": 21.0245
+  },
+  {
+    "id": 1581297,
+    "name": "Hải Phòng",
+    "country": "VN",
+    "lon": 106.583328,
+    "lat": 20.83333
+  },
+  {
+    "id": 1584071,
+    "name": "Đà Lạt",
+    "country": "VN",
+    "lon": 108.441933,
+    "lat": 11.94646
+  },
+  {
+    "id": 5039192,
+    "name": "New York",
+    "country": "US",
+    "lon": -95.376152,
+    "lat": 46.518021
+  },
+  {
+    "id": 2643123,
+    "name": "Manchester",
+    "country": "GB",
+    "lon": -2.23743,
+    "lat": 53.480949
+  },
+  {
+    "id": 3333167,
+    "name": "Liverpool",
+    "country": "GB",
+    "lon": -2.91667,
+    "lat": 53.416672
+  },
+  {
+    "id": 1642911,
+    "name": "Jakarta",
+    "country": "ID",
+    "lon": 106.845131,
+    "lat": -6.21462
+  },
+  {
+    "id": 524901,
+    "name": "Moscow",
+    "country": "RU",
+    "lon": 37.615555,
+    "lat": 55.75222
+  }
+]
+
