@@ -1,4 +1,4 @@
-package com.example.androidTemplate.screen
+package com.example.weather.screen
 
 interface RequestCompleteListener<T> {
     fun onRequestSuccess(data: T)
