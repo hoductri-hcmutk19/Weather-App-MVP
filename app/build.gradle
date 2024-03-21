@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.androidTemplate'
+    namespace 'com.example.weather'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.androidTemplate"
+        applicationId "com.example.weather"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -29,6 +29,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    buildFeatures{
+        viewBinding = true
+        buildConfig = true
     }
 
 }
