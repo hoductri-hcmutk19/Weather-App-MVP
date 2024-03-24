@@ -1,6 +1,5 @@
 package com.example.weather.utils.ext
 
-import com.example.weather.data.model.City
 import com.example.weather.utils.Constant.KELVIN_TO_CELSIUS_NUMBER
 import com.example.weather.utils.Constant.MPS_TO_KMPH_NUMBER
 import java.text.SimpleDateFormat
@@ -49,16 +48,6 @@ fun Int.unixTimestampToTimeString(): String {
     }
 
     return this.toString()
-}
-
-fun MutableList<City>.convertToListOfCityName(): MutableList<String> {
-    val cityNameList: MutableList<String> = mutableListOf()
-
-    for (city in this) {
-        cityNameList.add(city.name)
-    }
-
-    return cityNameList
 }
 
 /**

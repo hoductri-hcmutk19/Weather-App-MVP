@@ -4,15 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".screen.MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/fetch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Fetch and Save data"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"/>
+
+    <Button
+        android:id="@+id/getAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get all data from local DB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/fetch"
+        android:layout_marginTop="60dp"/>
+
+    <Button
+        android:id="@+id/getOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get data by ID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getAll"
+        android:layout_marginTop="30dp"/>
+
+    <Button
+        android:id="@+id/getOverall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get all overall data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getOne"
+        android:layout_marginTop="30dp"/>
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/getOverall"
+        android:layout_marginTop="60dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
