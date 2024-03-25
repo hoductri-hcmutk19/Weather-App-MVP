@@ -72,7 +72,7 @@ class ParseDataWithJson {
         return dataWeatherList
     }
 
-    fun parseJsonElementWeather(jsonObject: JSONObject, tagObject: String): WeatherBasic {
+    private fun parseJsonElementWeather(jsonObject: JSONObject, tagObject: String): WeatherBasic {
         return when(tagObject) {
             WeatherEntry.DAILY_OBJECT -> {
                 WeatherBasic(jsonObject.getInt(WeatherBasicEntry.DATE_TIME),

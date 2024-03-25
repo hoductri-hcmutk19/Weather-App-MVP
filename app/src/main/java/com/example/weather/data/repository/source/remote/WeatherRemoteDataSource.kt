@@ -30,7 +30,7 @@ class WeatherRemoteDataSource : WeatherDataSource.Remote {
                 + Constant.DAILY_NUM_DAY
                 + Constant.BASE_API_KEY)
         val url: MutableList<String> = mutableListOf(urlCurrent, urlHourly, urlDaily)
-        GetJsonFromUrl(listener).execute(url)
+        GetJsonFromUrl(url, listener)
     }
 
     companion object {

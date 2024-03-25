@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.fetch.setOnClickListener {
             repository.getWeather(
-                16.0715567,
-                107.7484401,
+                10.7782076,
+                106.704281,
                 object : RequestCompleteListener<Weather> {
                     override fun onRequestSuccess(data: Weather) {
                         Log.v("myTag1", "$data")
