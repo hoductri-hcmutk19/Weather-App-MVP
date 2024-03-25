@@ -1,21 +1,34 @@
 package com.example.weather.data.repository.source
 
-import com.example.weather.data.model.City
-import com.example.weather.data.model.CurrentWeather
+import com.example.weather.data.model.Weather
 import com.example.weather.screen.RequestCompleteListener
 
 interface WeatherDataSource {
     /**
      * Local
      */
-    interface Local {
-        fun getCityLocal(listener: RequestCompleteListener<MutableList<City>>)
-    }
+    interface Local
 
     /**
      * Remote
      */
     interface Remote {
-        fun getWeather(cityId: Int, listener: RequestCompleteListener<CurrentWeather>)
+        fun fetchWeatherForecastCurrent(
+            latitude: Double,
+            longitude: Double,
+            listener: RequestCompleteListener<Weather>
+        )
+
+        fun fetchWeatherForecastHourly(
+            latitude: Double,
+            longitude: Double,
+            listener: RequestCompleteListener<Weather>
+        )
+
+        fun fetchWeatherForecastDaily(
+            latitude: Double,
+            longitude: Double,
+            listener: RequestCompleteListener<Weather>
+        )
     }
 }
