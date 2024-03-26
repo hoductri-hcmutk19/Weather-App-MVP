@@ -7,7 +7,13 @@ interface WeatherDataSource {
     /**
      * Local
      */
-    interface Local
+    interface Local {
+        fun insertWeather(current: Weather, hourly: Weather, daily: Weather)
+        fun getAllLocalWeathers(): List<Weather>
+        fun getLocalWeather(id: String): Weather?
+        fun getAllLocalOveralls(): List<Weather>
+        fun deleteWeather(id: String)
+    }
 
     /**
      * Remote
