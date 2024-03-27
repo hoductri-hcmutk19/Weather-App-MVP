@@ -93,17 +93,12 @@ class WeatherPresenter(
 
     override fun getWeatherLocal() {
         Log.v("myTag", "getWeatherLocal")
-//        repository.getAllLocalWeathers().let {
-//            Log.v("myTag", "$it")
-//            if (it.isNotEmpty()) {
-//                Log.v("myTag", "getWeatherLocal Inside")
-//                view?.onGetCurrentWeatherSuccess(it[0])
-//            }
-//        }
-        val a: Weather? = repository.getLocalWeather("Ho Chi Minh CityVN")
-        Log.v("myTag", "$a")
-        if (a != null) {
-            view?.onGetCurrentWeatherSuccess(a)
+        repository.getAllLocalWeathers().let {
+            Log.v("myTag", "$it")
+            if (it.isNotEmpty()) {
+                Log.v("myTag", "getWeatherLocal Inside")
+                view?.onGetCurrentWeatherSuccess(it[0])
+            }
         }
     }
 

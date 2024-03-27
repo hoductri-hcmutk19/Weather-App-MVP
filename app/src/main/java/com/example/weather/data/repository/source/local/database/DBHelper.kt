@@ -187,51 +187,51 @@ class DBHelper(
             "SELECT * FROM $tableName WHERE $COLUMN_ID_WEATHER = '$idWeather'",
             null
         )
-        cursor.apply {
-            return when (tableName) {
-                TABLE_CURRENT -> {
-                    var basicWeather: WeatherBasic? = null
-                    moveToFirst()
-                    while (!isAfterLast) {
-                        val value = JSONObject(getString(getColumnIndex(COLUMN_VALUE)))
-                        basicWeather = DBUtils.parseJsonToBasicWeather(
+        return when (tableName) {
+            TABLE_CURRENT -> {
+                var basicWeather: WeatherBasic? = null
+                cursor.moveToFirst()
+                while (!cursor.isAfterLast) {
+                    val value = JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_VALUE)))
+                    basicWeather = DBUtils.parseJsonToBasicWeather(
+                        value,
+                        WeatherEntry.CURRENTLY_OBJECT
+                    )
+                }
+                cursor.close()
+                basicWeather
+            }
+
+            TABLE_HOURLY -> {
+                cursor.moveToFirst()
+                while (!cursor.isAfterLast) {
+                    val value = JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_VALUE)))
+                    listData.add(
+                        DBUtils.parseJsonToBasicWeather(
                             value,
-                            WeatherEntry.CURRENTLY_OBJECT
+                            WeatherEntry.HOURLY_OBJECT
                         )
-                    }
-                    cursor.close()
-                    basicWeather
+                    )
+                    cursor.moveToNext()
                 }
-                TABLE_HOURLY -> {
-                    moveToFirst()
-                    while (!isAfterLast) {
-                        val value = JSONObject(getString(getColumnIndex(COLUMN_VALUE)))
-                        listData.add(
-                            DBUtils.parseJsonToBasicWeather(
-                                value,
-                                WeatherEntry.HOURLY_OBJECT
-                            )
+                cursor.close()
+                listData
+            }
+
+            else -> {
+                cursor.moveToFirst()
+                while (!cursor.isAfterLast) {
+                    val value = JSONObject(cursor.getString(cursor.getColumnIndex(COLUMN_VALUE)))
+                    listData.add(
+                        DBUtils.parseJsonToBasicWeather(
+                            value,
+                            WeatherEntry.DAILY_OBJECT
                         )
-                        moveToNext()
-                    }
-                    cursor.close()
-                    listData
+                    )
+                    cursor.moveToNext()
                 }
-                else -> {
-                    moveToFirst()
-                    while (!isAfterLast) {
-                        val value = JSONObject(getString(getColumnIndex(COLUMN_VALUE)))
-                        listData.add(
-                            DBUtils.parseJsonToBasicWeather(
-                                value,
-                                WeatherEntry.DAILY_OBJECT
-                            )
-                        )
-                        moveToNext()
-                    }
-                    cursor.close()
-                    listData
-                }
+                cursor.close()
+                listData
             }
         }
     }
