@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/cardBackgroundOpacity"
+    app:strokeWidth="@dimen/dp_2"
+    app:strokeColor="@color/cardStroke"
+    app:cardCornerRadius="@dimen/dp_19">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_25"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            android:fontFamily="@font/overpass"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="2"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text= "@string/today_12_september" />
+
+        <TextView
+            android:id="@+id/tv_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_72"
+            android:fontFamily="@font/overpass_light"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="6"
+            android:shadowDy="10"
+            android:shadowRadius="15"
+            android:layout_marginTop="@dimen/dp_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_time"
+            android:text="@string/_29" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/degree_celsius_symbol"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_35"
+            android:fontFamily="@font/overpass_light"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="6"
+            android:shadowDy="10"
+            android:shadowRadius="15"
+            app:layout_constraintStart_toEndOf="@id/tv_temperature"
+            app:layout_constraintTop_toTopOf="@id/tv_temperature" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_18"
+            android:fontFamily="@font/overpass_bold"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="2"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_temperature"
+            android:text= "@string/clear_sky" />
+
+        <include
+            android:id="@+id/layout_basic_detail"
+            layout="@layout/layout_basic_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@id/tv_description"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

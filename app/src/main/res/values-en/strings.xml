@@ -1,18 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">HiWeather</string>
     <string name="view_weather">View Weather</string>
     <string name="degree_celsius_symbol">°C</string>
     <string name="description_weather_condition_icon">weather condition icon</string>
     <string name="label_visibility">Visibility</string>
-    <string name="error_messages">Có lỗi xảy ra !</string>
-    <string name="choose_on_map"><![CDATA[Chọn trên bản đồ   >]]></string>
-    <string name="wind">Gió</string>
+    <string name="error_messages">Error messages</string>
+    <string name="choose_on_map"><![CDATA[Choose on map >]]></string>
+    <string name="wind">Wind</string>
     <string name="line">|</string>
     <string name="_15_km_h">15 km/h</string>
-    <string name="hum">Độ ẩm</string>
+    <string name="hum">Hum</string>
     <string name="_26">26 %</string>
-    <string name="today_12_september">Hôm nay, 12 tháng 9</string>
+    <string name="today_12_september">Today, 12 September</string>
     <string name="_29">29</string>
-    <string name="clear_sky">Trời quang mây</string>
+    <string name="clear_sky">Clear Sky</string>
     <string name="ho_chi_minh">Ho Chi Minh</string>
 </resources>
