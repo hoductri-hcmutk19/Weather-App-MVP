@@ -198,6 +198,7 @@ class DBHelper(
                             value,
                             WeatherEntry.CURRENTLY_OBJECT
                         )
+                        moveToNext()
                     }
                     cursor.close()
                     basicWeather
