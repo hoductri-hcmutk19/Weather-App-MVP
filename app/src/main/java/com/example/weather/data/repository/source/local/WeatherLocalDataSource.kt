@@ -12,8 +12,12 @@ class WeatherLocalDataSource private constructor(
 
     private val dbHelper: IDBHelper by lazy { DBHelper.getInstance(context) }
 
-    override fun insertWeather(current: Weather, hourly: Weather, daily: Weather) {
-        dbHelper.insertWeather(current, hourly, daily)
+    override fun insertCurrentWeather(current: Weather, hourly: Weather, daily: Weather) {
+        dbHelper.insertWeather(current, hourly, daily, "false")
+    }
+
+    override fun insertFavoriteWeather(current: Weather, hourly: Weather, daily: Weather) {
+        dbHelper.insertWeather(current, hourly, daily, "true")
     }
 
     override fun getAllLocalWeathers(): List<Weather> {

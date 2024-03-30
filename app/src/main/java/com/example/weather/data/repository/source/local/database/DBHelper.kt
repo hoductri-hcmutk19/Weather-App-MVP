@@ -35,18 +35,34 @@ class DBHelper(
         }
     }
 
-    override fun insertWeather(current: Weather, hourly: Weather, daily: Weather) {
+    @SuppressLint("Range")
+    override fun insertWeather(current: Weather, hourly: Weather, daily: Weather, isFavorite: String) {
         val idWeather =
             (current.city + current.country)
-        val cursorWeather = readableDatabase.rawQuery(
-            "SELECT * FROM $TABLE_WEATHER WHERE $COLUMN_ID_WEATHER = '$idWeather'",
-            null
-        )
+        val cursorWeather: Cursor = if (isFavorite == "true") {
+            readableDatabase.rawQuery(
+                "SELECT * FROM $TABLE_WEATHER WHERE $COLUMN_ID_WEATHER = '$idWeather'",
+                null
+            )
+        } else {
+            readableDatabase.rawQuery(
+                "SELECT * FROM $TABLE_WEATHER WHERE ${WeatherEntry.IS_FAVORITE} = '$FALSE'",
+                null
+            )
+        }
         cursorWeather.apply {
             if (moveToFirst() && count > 0) {
-                deleteWeather(idWeather)
+                if (isFavorite == "true") {
+                    deleteWeather(idWeather)
+                } else {
+                    val city = cursorWeather.getString(getColumnIndex(WeatherEntry.CITY))
+                    val country = cursorWeather.getString(getColumnIndex(WeatherEntry.COUNTRY))
+                    val idWeatherNoFavorite = city + country
+                    deleteWeather(idWeatherNoFavorite)
+                }
             }
         }
+
         ContentValues().apply {
             put(COLUMN_ID_WEATHER, idWeather)
             put(WeatherEntry.LATITUDE, current.latitude)
@@ -54,6 +70,7 @@ class DBHelper(
             put(WeatherEntry.TIME_ZONE, current.timeZone)
             put(WeatherEntry.CITY, current.city)
             put(WeatherEntry.COUNTRY, current.country)
+            put(WeatherEntry.IS_FAVORITE, isFavorite)
             writableDatabase.insert(TABLE_WEATHER, null, this)
         }
         insertBasic(current.weatherCurrent, idWeather, TABLE_CURRENT)
@@ -112,6 +129,7 @@ class DBHelper(
                         getInt(getColumnIndex(WeatherEntry.TIME_ZONE)),
                         getString(getColumnIndex(WeatherEntry.CITY)),
                         getString(getColumnIndex(WeatherEntry.COUNTRY)),
+                        getString(getColumnIndex(WeatherEntry.IS_FAVORITE)),
                         getWeatherElement(TABLE_CURRENT, idWeather) as WeatherBasic,
                         getWeatherElement(TABLE_HOURLY, idWeather) as List<WeatherBasic>,
                         getWeatherElement(TABLE_DAILY, idWeather) as List<WeatherBasic>
@@ -141,6 +159,7 @@ class DBHelper(
                         null,
                         getString(getColumnIndex(WeatherEntry.CITY)),
                         getString(getColumnIndex(WeatherEntry.COUNTRY)),
+                        getString(getColumnIndex(WeatherEntry.IS_FAVORITE)),
                         null,
                         null,
                         null
@@ -169,6 +188,7 @@ class DBHelper(
                     getInt(getColumnIndex(WeatherEntry.TIME_ZONE)),
                     getString(getColumnIndex(WeatherEntry.CITY)),
                     getString(getColumnIndex(WeatherEntry.COUNTRY)),
+                    getString(getColumnIndex(WeatherEntry.IS_FAVORITE)),
                     getWeatherElement(TABLE_CURRENT, idWeather) as WeatherBasic,
                     getWeatherElement(TABLE_HOURLY, idWeather) as List<WeatherBasic>,
                     getWeatherElement(TABLE_DAILY, idWeather) as List<WeatherBasic>
@@ -280,6 +300,7 @@ class DBHelper(
         private const val TABLE_DAILY = "Daily"
         private const val COLUMN_ID_WEATHER = "id_weather"
         private const val COLUMN_VALUE = "value"
+        private const val FALSE = "false"
 
         // Create table
         private const val SQL_CREATE_TABLE_WEATHER = "CREATE TABLE $TABLE_WEATHER(" +
@@ -288,7 +309,8 @@ class DBHelper(
             "${WeatherEntry.LONGITUDE} REAL, " +
             "${WeatherEntry.TIME_ZONE} INTEGER, " +
             "${WeatherEntry.CITY} TEXT, " +
-            "${WeatherEntry.COUNTRY} TEXT)"
+            "${WeatherEntry.COUNTRY} TEXT, " +
+            "${WeatherEntry.IS_FAVORITE} TEXT)"
         private const val SQL_CREATE_TABLE_BODY =
             "$COLUMN_VALUE TEXT, " +
                 "$COLUMN_ID_WEATHER TEXT, " +

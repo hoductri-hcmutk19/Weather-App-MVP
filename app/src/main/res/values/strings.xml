@@ -14,5 +14,10 @@
     <string name="today_12_september">Hôm nay, 12 tháng 9</string>
     <string name="_29">29</string>
     <string name="clear_sky">Trời quang mây</string>
-    <string name="ho_chi_minh">Ho Chi Minh</string>
+    <string name="ho_chi_minh">Hồ Chí Minh</string>
+    <string name="message_network_not_responding">Mạng không phản hồi, bạn vui lòng kiểm tra kết nối wifi và mạng di động nhé!</string>
+    <string name="thank_you">Cảm ơn bạn nhé!</string>
+    <string name="turn_on_location">Vui lòng bật Vị Trí</string>
+    <string name="location_denied">Bạn vui lòng cấp quyền truy cập vị trí để sử dụng ứng dụng nhé!</string>
+    <string name="db_empty">Hiện không có dữ liệu thời tiết được lưu. Vui lòng kêt nối lại mạng !</string>
 </resources>

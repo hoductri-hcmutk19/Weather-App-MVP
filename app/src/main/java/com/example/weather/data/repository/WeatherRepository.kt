@@ -11,8 +11,12 @@ class WeatherRepository private constructor(
     private val remoteDataSource: WeatherRemoteDataSource
 ) : WeatherDataSource.Local, WeatherDataSource.Remote {
 
-    override fun insertWeather(current: Weather, hourly: Weather, daily: Weather) {
-        localDataSource.insertWeather(current, hourly, daily)
+    override fun insertCurrentWeather(current: Weather, hourly: Weather, daily: Weather) {
+        localDataSource.insertCurrentWeather(current, hourly, daily)
+    }
+
+    override fun insertFavoriteWeather(current: Weather, hourly: Weather, daily: Weather) {
+        localDataSource.insertFavoriteWeather(current, hourly, daily)
     }
 
     override fun getAllLocalWeathers(): List<Weather> {

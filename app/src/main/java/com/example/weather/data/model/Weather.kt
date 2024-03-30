@@ -11,6 +11,7 @@ data class Weather(
     val timeZone: Int? = 0,
     var city: String? = "",
     var country: String? = "",
+    var isFavorite: String? = "",
     val weatherCurrent: WeatherBasic?,
     val weatherHourlyList: List<WeatherBasic>?,
     val weatherDailyList: List<WeatherBasic>?
@@ -30,4 +31,5 @@ object WeatherEntry {
     const val LON = "lon"
     const val COORDINATE = "coord"
     const val CITY_LIST = "city"
+    const val IS_FAVORITE = "favorite"
 }
