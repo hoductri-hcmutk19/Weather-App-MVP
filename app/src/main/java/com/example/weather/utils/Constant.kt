@@ -12,4 +12,7 @@ object Constant {
     const val HOURLY_NUM_TIME = "&cnt=8"
     const val KELVIN_TO_CELSIUS_NUMBER = 273.15
     const val MPS_TO_KMPH_NUMBER = 3.6
+    const val LATITUDE_KEY = "LATITUDE"
+    const val LONGITUDE_KEY = "LONGITUDE"
+    const val NIGHT_TIME_START = 18
 }

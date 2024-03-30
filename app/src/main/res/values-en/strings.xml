@@ -16,4 +16,9 @@
     <string name="_29">29</string>
     <string name="clear_sky">Clear Sky</string>
     <string name="ho_chi_minh">Ho Chi Minh</string>
+    <string name="message_network_not_responding">The network is not responding, please check the wifi and mobile network!</string>
+    <string name="thank_you">Thank you!</string>
+    <string name="turn_on_location">Turn on location !</string>
+    <string name="location_denied">Please grant location access permission to use the application!</string>
+    <string name="db_empty">No weather data is saved. Please reconnect to the network!</string>
 </resources>

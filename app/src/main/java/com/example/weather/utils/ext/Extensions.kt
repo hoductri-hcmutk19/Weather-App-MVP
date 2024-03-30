@@ -1,7 +1,14 @@
 package com.example.weather.utils.ext
 
+import com.example.weather.R
+import com.example.weather.data.anotation.Icon
+import com.example.weather.data.anotation.Icon.Companion.CLEAR
+import com.example.weather.data.anotation.Icon.Companion.CLOUDS
+import com.example.weather.data.anotation.Icon.Companion.RAIN
+import com.example.weather.data.anotation.Icon.Companion.SNOW
 import com.example.weather.utils.Constant.KELVIN_TO_CELSIUS_NUMBER
 import com.example.weather.utils.Constant.MPS_TO_KMPH_NUMBER
+import com.example.weather.utils.Constant.NIGHT_TIME_START
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,7 +17,7 @@ fun Int.unixTimestampToDateTimeString(): String {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = this * 1000.toLong()
 
-        val outputDateFormat = SimpleDateFormat("dd MMM, yyyy - hh:mm a", Locale.ENGLISH)
+        val outputDateFormat = SimpleDateFormat("dd MMM - hh:mm a", Locale.ENGLISH)
         outputDateFormat.timeZone = TimeZone.getDefault() // user's default time zone
         return outputDateFormat.format(calendar.time)
     } catch (e: IllegalArgumentException) {
@@ -40,7 +47,7 @@ fun Int.unixTimestampToTimeString(): String {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = this * 1000.toLong()
 
-        val outputDateFormat = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        val outputDateFormat = SimpleDateFormat("hh", Locale.ENGLISH)
         outputDateFormat.timeZone = TimeZone.getDefault()
         return outputDateFormat.format(calendar.time)
     } catch (e: IllegalArgumentException) {
@@ -65,3 +72,25 @@ fun Double.kelvinToCelsius(): Int {
 fun Double.mpsToKmph(): Int {
     return (this * MPS_TO_KMPH_NUMBER).toInt()
 }
+
+fun getIcon(@Icon icon: String, time: Int): Int? {
+    return if (time > NIGHT_TIME_START) {
+        getNightIcons()[icon]
+    } else {
+        getBrightIcons()[icon]
+    }
+}
+
+private fun getBrightIcons() = hashMapOf(
+    CLEAR to R.drawable.ic_clear_day,
+    RAIN to R.drawable.ic_rain_day,
+    SNOW to R.drawable.ic_snow_day,
+    CLOUDS to R.drawable.ic_clouds_day
+)
+
+private fun getNightIcons() = hashMapOf(
+    CLEAR to R.drawable.ic_clear_night,
+    RAIN to R.drawable.ic_rain_night,
+    SNOW to R.drawable.ic_snow_night,
+    CLOUDS to R.drawable.ic_clouds_night
+)

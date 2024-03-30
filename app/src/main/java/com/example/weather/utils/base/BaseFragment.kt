@@ -1,5 +1,6 @@
 package com.example.weather.utils.base
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,10 @@ abstract class BaseFragment<viewBinding : ViewBinding> : Fragment() {
 
     abstract fun initView()
 
+    abstract fun checkNetwork(activity: Activity?)
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        checkNetwork(activity)
         _viewBinding = inflateViewBinding(inflater)
         initView()
         return viewBinding.root

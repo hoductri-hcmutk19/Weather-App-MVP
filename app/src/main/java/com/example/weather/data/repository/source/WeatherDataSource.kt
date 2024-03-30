@@ -8,7 +8,8 @@ interface WeatherDataSource {
      * Local
      */
     interface Local {
-        fun insertWeather(current: Weather, hourly: Weather, daily: Weather)
+        fun insertCurrentWeather(current: Weather, hourly: Weather, daily: Weather)
+        fun insertFavoriteWeather(current: Weather, hourly: Weather, daily: Weather)
         fun getAllLocalWeathers(): List<Weather>
         fun getLocalWeather(id: String): Weather?
         fun getAllLocalOveralls(): List<Weather>
