@@ -131,6 +131,7 @@ class ParseDataWithJson {
                         jsonObject.getJSONObject(WeatherEntry.CITY_LIST).getString(WeatherEntry.CITY),
                         jsonObject.getJSONObject(WeatherEntry.CITY_LIST).getString(WeatherEntry.COUNTRY),
                         null,
+                        null,
                         hourlyWeatherList,
                         null
                     )
@@ -147,6 +148,7 @@ class ParseDataWithJson {
                         jsonObject.getJSONObject(WeatherEntry.CITY_LIST).getString(WeatherEntry.COUNTRY),
                         null,
                         null,
+                        null,
                         dailyWeatherList
                     )
                 }
@@ -161,6 +163,7 @@ class ParseDataWithJson {
                         jsonObject.getString(WeatherEntry.CITY),
                         jsonObject.getJSONObject(WeatherEntry.SYS)
                             .getString(WeatherEntry.COUNTRY),
+                        null,
                         parseJsonElementWeather(jsonObject, WeatherEntry.CURRENTLY_OBJECT),
                         null,
                         null
