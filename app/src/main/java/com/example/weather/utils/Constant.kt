@@ -17,4 +17,7 @@ object Constant {
     const val NIGHT_TIME_START = 18
     const val TRUE = "true"
     const val FALSE = "false"
+    const val EARTH_RADIUS = 6371 // The average radius of the earth in kilometers
+    const val MIN_DISTANCE_FIRST_TRIGGER = 5
+    const val SPLASH_TIME = 1900L // ms
 }

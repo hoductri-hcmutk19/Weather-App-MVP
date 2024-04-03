@@ -1,4 +1,4 @@
-package com.example.weather.utils.ext
+package com.example.weather.utils
 
 import com.example.weather.data.model.WeatherEntry
 import com.example.weather.data.model.entity.WeatherBasic

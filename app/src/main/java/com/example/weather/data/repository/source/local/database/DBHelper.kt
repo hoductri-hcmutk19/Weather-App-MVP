@@ -10,7 +10,7 @@ import com.example.weather.data.model.Weather
 import com.example.weather.data.model.WeatherEntry
 import com.example.weather.data.model.entity.WeatherBasic
 import com.example.weather.utils.Constant
-import com.example.weather.utils.ext.DBUtils
+import com.example.weather.utils.DBUtils
 import org.json.JSONObject
 
 class DBHelper(

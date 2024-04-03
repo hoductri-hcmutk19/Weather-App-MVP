@@ -8,8 +8,10 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutResourceId())
         onDeviceOffline()
+        onLocationRequest()
     }
 
     abstract fun getLayoutResourceId(): Int
     abstract fun onDeviceOffline()
+    abstract fun onLocationRequest()
 }
