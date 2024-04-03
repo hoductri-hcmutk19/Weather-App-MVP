@@ -42,10 +42,10 @@ class MainActivity : BaseActivity(), OnFetchListener {
     }
 
     private fun initView(location: Location?) {
-        location?.let {
+        location?.let { location ->
             addFragmentToActivity(
                 supportFragmentManager,
-                WeatherFragment.newInstance(it.latitude, it.longitude),
+                WeatherFragment.newInstance(location.latitude, location.longitude),
                 R.id.container
             )
         }

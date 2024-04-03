@@ -3,6 +3,8 @@ package com.example.weather.screen.home
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.example.weather.R
@@ -21,31 +23,45 @@ import com.example.weather.utils.ext.unixTimestampToDateTimeString
 import com.example.weather.utils.ext.unixTimestampToTimeString
 
 @Suppress("TooManyFunctions")
-class WeatherFragment private constructor() : BaseFragment<FragmentWeatherBinding>(), WeatherContract.View {
+class WeatherFragment private constructor() :
+    BaseFragment<FragmentWeatherBinding>(),
+    WeatherContract.View,
+    AdapterView.OnItemSelectedListener {
 
     private var mRepository: WeatherRepository? = null
     private var mPresenter: WeatherPresenter? = null
     private var mLatitude: Double = 0.0
     private var mLongitude: Double = 0.0
-    private var mWeatherTemp: Weather? = null
+    private var mWeatherCurrent: Weather? = null
     private var mIsNetworkEnable: Boolean = false
+    private var mPosition: Int = 0
+    private var mListItemSpinner: ArrayList<String> = arrayListOf()
+    private var mSpinnerCheck: Int = 0
+
+    private lateinit var mWeatherList: List<Weather>
+    private lateinit var mSpinnerAdapter: ArrayAdapter<String>
 
     override fun inflateViewBinding(inflater: LayoutInflater): FragmentWeatherBinding {
         return FragmentWeatherBinding.inflate(inflater)
     }
 
     override fun initView() {
+        mSpinnerAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, mListItemSpinner)
+        mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        viewBinding.layoutHeader.spinner.adapter = mSpinnerAdapter
+
         viewBinding.layoutHeader.refreshIcon.setOnClickListener {
             onRefresh()
         }
         viewBinding.layoutWeatherBasic.cardView.setOnClickListener { }
         viewBinding.btnNavMap.setOnClickListener { }
+        viewBinding.layoutHeader.spinner.onItemSelectedListener = this
     }
 
     override fun initData() {
-        mRepository = context?.let {
+        mRepository = context?.let { context ->
             WeatherRepository.getInstance(
-                WeatherLocalDataSource.getInstance(it),
+                WeatherLocalDataSource.getInstance(context),
                 WeatherRemoteDataSource.getInstance()
             )
         }
@@ -54,7 +70,7 @@ class WeatherFragment private constructor() : BaseFragment<FragmentWeatherBindin
         arguments?.let {
             mLatitude = it.getDouble(Constant.LATITUDE_KEY)
             mLongitude = it.getDouble(Constant.LONGITUDE_KEY)
-            mPresenter?.getWeather(mLatitude, mLongitude, mIsNetworkEnable)
+            mPresenter?.getWeather(mLatitude, mLongitude, mIsNetworkEnable, true)
         }
     }
 
@@ -65,6 +81,21 @@ class WeatherFragment private constructor() : BaseFragment<FragmentWeatherBindin
             mIsNetworkEnable = false
             onInternetConnectionFailed()
         }
+    }
+
+    override fun onGetSpinnerList(weatherList: List<Weather>) {
+        mWeatherList = weatherList
+        val newListItemSpinner: ArrayList<String> = arrayListOf()
+        weatherList.forEach { mWeather ->
+            mWeather.city?.let { cityName ->
+                newListItemSpinner.add(cityName)
+            }
+        }
+        mListItemSpinner.apply {
+            clear()
+            addAll(newListItemSpinner)
+        }
+        mSpinnerAdapter.notifyDataSetChanged()
     }
 
     override fun onProgressLoading(isLoading: Boolean) {
@@ -78,27 +109,65 @@ class WeatherFragment private constructor() : BaseFragment<FragmentWeatherBindin
     }
 
     override fun onGetCurrentWeatherSuccess(weather: Weather) {
-        mWeatherTemp = weather
+        if (weather.isFavorite == Constant.FALSE) {
+            mWeatherCurrent = weather
+        }
         bindDataToView(weather)
     }
 
+    @Suppress("NestedBlockDepth")
     private fun bindDataToView(weather: Weather) {
-        weather.weatherCurrent?.let {
-            val time = it.dateTime?.unixTimestampToTimeString()?.toInt()
+        viewBinding.layoutHeader.locationIcon.visibility =
+            if (weather.isFavorite == Constant.FALSE) View.VISIBLE else View.GONE
+
+        weather.weatherCurrent?.let { weatherCurrent ->
+            val time = weatherCurrent.dateTime?.unixTimestampToTimeString()?.toInt()
             if (time != null) {
-                getIcon(it.weatherMainCondition!!, time)?.let { image ->
-                    viewBinding.icWeather.setImageResource(image)
+                weatherCurrent.weatherMainCondition?.let { mainCondition ->
+                    getIcon(mainCondition, time)?.let { image ->
+                        viewBinding.icWeather.setImageResource(image)
+                    }
                 }
             }
-
             viewBinding.layoutWeatherBasic.tvDateTime.text =
-                "Today, " + it.dateTime?.unixTimestampToDateTimeString()
-            viewBinding.layoutWeatherBasic.tvTemperature.text = it.temperature?.kelvinToCelsius().toString()
-            viewBinding.layoutWeatherBasic.tvDescription.text = it.weatherDescription
+                "Today, " + weatherCurrent.dateTime?.unixTimestampToDateTimeString()
+            viewBinding.layoutWeatherBasic.tvTemperature.text = weatherCurrent.temperature?.kelvinToCelsius().toString()
+            viewBinding.layoutWeatherBasic.tvDescription.text = weather.city
             viewBinding.layoutWeatherBasic.layoutBasicDetail.tvWindValue.text =
-                it.windSpeed?.mpsToKmph().toString() + " km/h"
-            viewBinding.layoutWeatherBasic.layoutBasicDetail.tvHumidityValue.text = it.humidity.toString() + " %"
+                weatherCurrent.windSpeed?.mpsToKmph().toString() + " km/h"
+            viewBinding.layoutWeatherBasic.layoutBasicDetail.tvHumidityValue.text =
+                weatherCurrent.humidity.toString() + " %"
         }
+    }
+
+    @Suppress("NestedBlockDepth")
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        if (mSpinnerCheck++ > 0) { // fix spinner auto click at default position (pos = 0) when it initialization
+            mPosition = pos
+            val itemLatitude = mWeatherList[pos].latitude
+            val itemLongitude = mWeatherList[pos].longitude
+            val itemID = mWeatherList[pos].city + mWeatherList[pos].country
+            val currentID = mWeatherCurrent?.city + mWeatherCurrent?.country
+            val isCurrent = itemID == currentID
+            if (mIsNetworkEnable) {
+                if (itemLatitude != null && itemLongitude != null) {
+                    mPresenter?.getWeather(itemLatitude, itemLongitude, true, isCurrent)
+                }
+            } else {
+                if (mWeatherList.isEmpty()) {
+                    if (itemLatitude != null && itemLongitude != null) {
+                        mPresenter?.getWeather(itemLatitude, itemLongitude, false, isCurrent)
+                    }
+                } else {
+                    bindDataToView(mWeatherList[pos])
+                }
+            }
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback.
+        // TODO implement later
     }
 
     override fun onInternetConnectionFailed() {
@@ -120,7 +189,23 @@ class WeatherFragment private constructor() : BaseFragment<FragmentWeatherBindin
 
     private fun onRefresh() {
         checkNetwork(activity)
-        mPresenter?.getWeather(mLatitude, mLongitude, mIsNetworkEnable)
+        val itemID = mWeatherList[mPosition].city + mWeatherList[mPosition].country
+        val currentID = mWeatherCurrent?.city + mWeatherCurrent?.country
+        val isCurrent = itemID == currentID
+        if (mIsNetworkEnable) {
+            mWeatherList[mPosition].latitude?.let { latitude ->
+                mWeatherList[mPosition].longitude?.let { longitude ->
+                    mPresenter?.getWeather(
+                        latitude,
+                        longitude,
+                        true,
+                        isCurrent
+                    )
+                }
+            }
+        } else {
+            bindDataToView(mWeatherList[mPosition])
+        }
     }
 
     companion object {

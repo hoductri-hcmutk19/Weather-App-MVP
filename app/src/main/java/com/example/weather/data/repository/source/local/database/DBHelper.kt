@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.weather.data.model.Weather
 import com.example.weather.data.model.WeatherEntry
 import com.example.weather.data.model.entity.WeatherBasic
+import com.example.weather.utils.Constant
 import com.example.weather.utils.ext.DBUtils
 import org.json.JSONObject
 
@@ -39,7 +40,7 @@ class DBHelper(
     override fun insertWeather(current: Weather, hourly: Weather, daily: Weather, isFavorite: String) {
         val idWeather =
             (current.city + current.country)
-        val cursorWeather: Cursor = if (isFavorite == "true") {
+        val cursorWeather: Cursor = if (isFavorite == Constant.TRUE) {
             readableDatabase.rawQuery(
                 "SELECT * FROM $TABLE_WEATHER WHERE $COLUMN_ID_WEATHER = '$idWeather'",
                 null
@@ -52,7 +53,7 @@ class DBHelper(
         }
         cursorWeather.apply {
             if (moveToFirst() && count > 0) {
-                if (isFavorite == "true") {
+                if (isFavorite == Constant.TRUE) {
                     deleteWeather(idWeather)
                 } else {
                     val city = cursorWeather.getString(getColumnIndex(WeatherEntry.CITY))
