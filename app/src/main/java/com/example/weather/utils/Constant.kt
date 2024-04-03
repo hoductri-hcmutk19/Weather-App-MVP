@@ -15,4 +15,6 @@ object Constant {
     const val LATITUDE_KEY = "LATITUDE"
     const val LONGITUDE_KEY = "LONGITUDE"
     const val NIGHT_TIME_START = 18
+    const val TRUE = "true"
+    const val FALSE = "false"
 }

@@ -1,5 +1,6 @@
 package com.example.weather.screen.home
 
+import android.accounts.NetworkErrorException
 import android.os.Handler
 import android.os.Looper
 import com.example.weather.data.model.Weather
@@ -18,7 +19,7 @@ class WeatherPresenter(
     private var current: Weather? = null
     private var hourly: Weather? = null
     private var daily: Weather? = null
-    private var isDataInserted = false
+    private var isDataFetching = false
 
     override fun setView(view: WeatherContract.View?) {
         this.view = view
@@ -28,10 +29,25 @@ class WeatherPresenter(
         // Register
     }
 
-    override fun getWeather(latitude: Double, longitude: Double, isNetworkEnable: Boolean) {
-        isDataInserted = false
-        view?.onProgressLoading(true)
+    override fun getWeather(latitude: Double, longitude: Double, isNetworkEnable: Boolean, isCurrent: Boolean) {
         if (isNetworkEnable) {
+            getRemoteWeather(latitude, longitude, isCurrent)
+        } else {
+            getLocalWeather()
+        }
+    }
+
+    private fun getRemoteWeather(latitude: Double, longitude: Double, isCurrent: Boolean) {
+        if (isDataFetching) {
+            return
+        }
+        isDataFetching = true
+
+        view?.onProgressLoading(true)
+        current = null
+        hourly = null
+        daily = null
+        try {
             mExecutor.execute {
                 repository.fetchWeatherForecastCurrent(
                     latitude,
@@ -39,7 +55,7 @@ class WeatherPresenter(
                     object : RequestCompleteListener<Weather> {
                         override fun onRequestSuccess(data: Weather) {
                             current = data
-                            insertWeatherIfDataAvailable(current, hourly, daily)
+                            insertWeatherIfDataAvailable(current, hourly, daily, isCurrent)
                         }
 
                         override fun onRequestFailed(e: Exception?) {
@@ -54,7 +70,7 @@ class WeatherPresenter(
                     object : RequestCompleteListener<Weather> {
                         override fun onRequestSuccess(data: Weather) {
                             hourly = data
-                            insertWeatherIfDataAvailable(current, hourly, daily)
+                            insertWeatherIfDataAvailable(current, hourly, daily, isCurrent)
                         }
 
                         override fun onRequestFailed(e: Exception?) {
@@ -69,7 +85,7 @@ class WeatherPresenter(
                     object : RequestCompleteListener<Weather> {
                         override fun onRequestSuccess(data: Weather) {
                             daily = data
-                            insertWeatherIfDataAvailable(current, hourly, daily)
+                            insertWeatherIfDataAvailable(current, hourly, daily, isCurrent)
                         }
 
                         override fun onRequestFailed(e: Exception?) {
@@ -79,27 +95,47 @@ class WeatherPresenter(
                     }
                 )
             }
-        } else {
-            val listWeather = repository.getAllLocalWeathers()
-            view?.onProgressLoading(false)
-            if (listWeather.isNotEmpty()) {
-                handleLocalWeatherList(listWeather)
-            } else {
-                view?.onDBEmpty()
+        } catch (e: NetworkErrorException) {
+            println(e)
+        } finally {
+            isDataFetching = false
+        }
+    }
+
+    fun insertWeatherIfDataAvailable(current: Weather?, hourly: Weather?, daily: Weather?, isCurrent: Boolean) {
+        if (current != null && hourly != null && daily != null) {
+            mHandler.post {
+                val idWeather = current.city + current.country
+                if (isCurrent) {
+                    repository.insertCurrentWeather(current, hourly, daily)
+                    onGetDataAndSendToView(idWeather)
+                } else {
+                    repository.insertFavoriteWeather(current, hourly, daily)
+                    onGetDataAndSendToView(idWeather)
+                }
             }
         }
     }
 
-    fun insertWeatherIfDataAvailable(current: Weather?, hourly: Weather?, daily: Weather?) {
-        if (!isDataInserted) {
-            if (current != null && hourly != null && daily != null) {
-                mHandler.post {
-                    view?.onProgressLoading(false)
-                    view?.onGetCurrentWeatherSuccess(current)
-                    isDataInserted = true
-                    repository.insertCurrentWeather(current, hourly, daily)
-                }
-            }
+    private fun onGetDataAndSendToView(idWeather: String) {
+        val listWeather = repository.getAllLocalWeathers()
+        view?.onGetSpinnerList(listWeather)
+        val current = repository.getLocalWeather(idWeather)
+        if (current != null) {
+            view?.onProgressLoading(false)
+            view?.onGetCurrentWeatherSuccess(current)
+        }
+        isDataFetching = false
+    }
+
+    private fun getLocalWeather() {
+        val listWeather = repository.getAllLocalWeathers()
+        view?.onProgressLoading(false)
+        view?.onGetSpinnerList(listWeather)
+        if (listWeather.isNotEmpty()) {
+            handleLocalWeatherList(listWeather)
+        } else {
+            view?.onDBEmpty()
         }
     }
 

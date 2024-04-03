@@ -5,6 +5,7 @@ import com.example.weather.data.repository.source.WeatherDataSource
 import com.example.weather.data.repository.source.local.WeatherLocalDataSource
 import com.example.weather.data.repository.source.remote.WeatherRemoteDataSource
 import com.example.weather.screen.RequestCompleteListener
+import com.example.weather.utils.Constant
 
 class WeatherRepository private constructor(
     private val localDataSource: WeatherLocalDataSource,
@@ -20,7 +21,9 @@ class WeatherRepository private constructor(
     }
 
     override fun getAllLocalWeathers(): List<Weather> {
-        return localDataSource.getAllLocalWeathers()
+        return localDataSource.getAllLocalWeathers().sortedWith(
+            compareBy({ it.isFavorite == Constant.TRUE }, { it.city })
+        )
     }
 
     override fun getLocalWeather(id: String): Weather? {
@@ -28,7 +31,9 @@ class WeatherRepository private constructor(
     }
 
     override fun getAllLocalOveralls(): List<Weather> {
-        return localDataSource.getAllLocalOveralls()
+        return localDataSource.getAllLocalOveralls().sortedWith(
+            compareBy({ it.isFavorite == Constant.TRUE }, { it.city })
+        )
     }
 
     override fun deleteWeather(id: String) {
