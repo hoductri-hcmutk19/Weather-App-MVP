@@ -93,4 +93,15 @@
         tools:visibility="visible"
         app:constraint_referenced_ids="ic_weather,layout_weather_basic,btn_nav_map" />
 
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

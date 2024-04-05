@@ -20,4 +20,11 @@
     <string name="turn_on_location">Vui lòng bật Vị Trí</string>
     <string name="location_denied">Bạn vui lòng cấp quyền truy cập vị trí để sử dụng ứng dụng nhé!</string>
     <string name="db_empty">Hiện không có dữ liệu thời tiết được lưu. Vui lòng kêt nối lại mạng !</string>
+    <string name="next_forecast">Dự báo kế tiếp</string>
+    <string name="hi_weather">HiWeather</string>
+    <string name="back">Quay lại</string>
+    <string name="today">Hôm nay</string>
+    <string name="_12_sep_2024">12 Sep, 2024</string>
+    <string name="sep_12">Sep, 12</string>
+    <string name="_15_00">15:00</string>
 </resources>

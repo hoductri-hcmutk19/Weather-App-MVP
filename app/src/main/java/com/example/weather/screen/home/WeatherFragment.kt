@@ -13,14 +13,16 @@ import com.example.weather.data.repository.WeatherRepository
 import com.example.weather.data.repository.source.local.WeatherLocalDataSource
 import com.example.weather.data.repository.source.remote.WeatherRemoteDataSource
 import com.example.weather.databinding.FragmentWeatherBinding
+import com.example.weather.screen.detail.DetailFragment
 import com.example.weather.utils.Constant
 import com.example.weather.utils.PermissionUtils
+import com.example.weather.utils.addFragmentToActivity
 import com.example.weather.utils.base.BaseFragment
 import com.example.weather.utils.ext.getIcon
 import com.example.weather.utils.ext.kelvinToCelsius
 import com.example.weather.utils.ext.mpsToKmph
 import com.example.weather.utils.ext.unixTimestampToDateTimeString
-import com.example.weather.utils.ext.unixTimestampToTimeString
+import com.example.weather.utils.ext.unixTimestampToHourString
 
 @Suppress("TooManyFunctions")
 class WeatherFragment private constructor() :
@@ -53,7 +55,16 @@ class WeatherFragment private constructor() :
         viewBinding.layoutHeader.refreshIcon.setOnClickListener {
             onRefresh()
         }
-        viewBinding.layoutWeatherBasic.cardView.setOnClickListener { }
+        viewBinding.layoutWeatherBasic.cardView.setOnClickListener {
+            viewBinding.btnNavMap.elevation = 0f
+            viewBinding.container.isClickable = true
+            viewBinding.container.isFocusable = true
+            addFragmentToActivity(
+                childFragmentManager,
+                DetailFragment.newInstance(mWeatherList[mPosition]),
+                R.id.container
+            )
+        }
         viewBinding.btnNavMap.setOnClickListener { }
         viewBinding.layoutHeader.spinner.onItemSelectedListener = this
     }
@@ -121,7 +132,7 @@ class WeatherFragment private constructor() :
             if (weather.isFavorite == Constant.FALSE) View.VISIBLE else View.GONE
 
         weather.weatherCurrent?.let { weatherCurrent ->
-            val time = weatherCurrent.dateTime?.unixTimestampToTimeString()?.toInt()
+            val time = weatherCurrent.dateTime?.unixTimestampToHourString()?.toInt()
             if (time != null) {
                 weatherCurrent.weatherMainCondition?.let { mainCondition ->
                     getIcon(mainCondition, time)?.let { image ->
