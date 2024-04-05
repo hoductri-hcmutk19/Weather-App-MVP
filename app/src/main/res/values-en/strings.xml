@@ -21,4 +21,13 @@
     <string name="turn_on_location">Turn on location !</string>
     <string name="location_denied">Please grant location access permission to use the application!</string>
     <string name="db_empty">No weather data is saved. Please reconnect to the network!</string>
+    <string name="next_forecast">Next Forecast</string>
+    <string name="hi_weather">HiWeather</string>
+    <string name="back">Back</string>
+    <string name="today">Today</string>
+    <string name="_12_sep_2024">12 Sep, 2024</string>
+    <string name="sep_12">Sep, 12</string>
+    <string name="_15_00">15:00</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="after_tomorrow">After tomorrow</string>
 </resources>

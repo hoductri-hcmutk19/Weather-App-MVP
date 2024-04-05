@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.example.weather.utils.ext
 
 import com.example.weather.R
@@ -8,6 +10,7 @@ import com.example.weather.data.anotation.Icon.Companion.RAIN
 import com.example.weather.data.anotation.Icon.Companion.SNOW
 import com.example.weather.utils.Constant.KELVIN_TO_CELSIUS_NUMBER
 import com.example.weather.utils.Constant.MPS_TO_KMPH_NUMBER
+import com.example.weather.utils.Constant.NIGHT_TIME_END
 import com.example.weather.utils.Constant.NIGHT_TIME_START
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,13 +30,58 @@ fun Int.unixTimestampToDateTimeString(): String {
     return this.toString()
 }
 
-fun Int.unixTimestampToDateString(): String {
+fun Int.unixTimestampToDateYearString(): String {
     try {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = this * 1000.toLong()
 
         val outputDateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH)
-        outputDateFormat.timeZone = TimeZone.getDefault() // user's default time zone
+        outputDateFormat.timeZone = TimeZone.getDefault()
+        return outputDateFormat.format(calendar.time)
+    } catch (e: IllegalArgumentException) {
+        println(e)
+    }
+
+    return this.toString()
+}
+
+fun Int.unixTimestampToDateMonthString(): String {
+    try {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = this * 1000.toLong()
+
+        val outputDateFormat = SimpleDateFormat("MMM, dd", Locale.ENGLISH)
+        outputDateFormat.timeZone = TimeZone.getDefault()
+        return outputDateFormat.format(calendar.time)
+    } catch (e: IllegalArgumentException) {
+        println(e)
+    }
+
+    return this.toString()
+}
+
+fun Int.unixTimestampToDateString(): String {
+    try {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = this * 1000.toLong()
+
+        val outputDateFormat = SimpleDateFormat("dd", Locale.ENGLISH)
+        outputDateFormat.timeZone = TimeZone.getDefault()
+        return outputDateFormat.format(calendar.time)
+    } catch (e: IllegalArgumentException) {
+        println(e)
+    }
+
+    return this.toString()
+}
+
+fun Int.unixTimestampToHourString(): String {
+    try {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = this * 1000.toLong()
+
+        val outputDateFormat = SimpleDateFormat("HH", Locale.ENGLISH)
+        outputDateFormat.timeZone = TimeZone.getDefault()
         return outputDateFormat.format(calendar.time)
     } catch (e: IllegalArgumentException) {
         println(e)
@@ -47,7 +95,7 @@ fun Int.unixTimestampToTimeString(): String {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = this * 1000.toLong()
 
-        val outputDateFormat = SimpleDateFormat("hh", Locale.ENGLISH)
+        val outputDateFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
         outputDateFormat.timeZone = TimeZone.getDefault()
         return outputDateFormat.format(calendar.time)
     } catch (e: IllegalArgumentException) {
@@ -74,7 +122,7 @@ fun Double.mpsToKmph(): Int {
 }
 
 fun getIcon(@Icon icon: String, time: Int): Int? {
-    return if (time > NIGHT_TIME_START) {
+    return if (time > NIGHT_TIME_START || time < NIGHT_TIME_END) {
         getNightIcons()[icon]
     } else {
         getBrightIcons()[icon]
