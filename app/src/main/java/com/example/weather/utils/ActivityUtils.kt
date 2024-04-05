@@ -1,10 +1,12 @@
 package com.example.weather.utils
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.weather.data.anotation.ResourceID
+import com.example.weather.utils.ext.notNull
 
-fun addFragmentToActivity(
+fun AppCompatActivity.addFragmentToActivity(
     fragmentManager: FragmentManager,
     fragment: Fragment,
     @ResourceID idContainer: Int
@@ -16,7 +18,7 @@ fun addFragmentToActivity(
         .commit()
 }
 
-fun replaceFragmentToActivity(
+fun AppCompatActivity.replaceFragmentToActivity(
     fragmentManager: FragmentManager,
     fragment: Fragment,
     @ResourceID idContainer: Int
@@ -24,10 +26,11 @@ fun replaceFragmentToActivity(
     fragmentManager.beginTransaction()
         .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
         .replace(idContainer, fragment)
+        .addToBackStack(fragment::class.java.simpleName)
         .commit()
 }
 
-fun removeFragmentFromActivity(
+fun AppCompatActivity.removeFragmentFromActivity(
     fragmentManager: FragmentManager,
     fragment: Fragment
 ) {
@@ -38,4 +41,15 @@ fun removeFragmentFromActivity(
             .remove(fragment)
             .commit()
     }
+}
+
+fun Fragment.goBackFragment(): Boolean {
+    activity?.supportFragmentManager?.notNull {
+        val isShowPreviousPage = it.backStackEntryCount > 0
+        if (isShowPreviousPage) {
+            it.popBackStackImmediate()
+        }
+        return isShowPreviousPage
+    }
+    return false
 }
