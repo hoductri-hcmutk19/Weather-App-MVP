@@ -14,6 +14,7 @@ object Constant {
     const val MPS_TO_KMPH_NUMBER = 3.6
     const val LATITUDE_KEY = "LATITUDE"
     const val LONGITUDE_KEY = "LONGITUDE"
+    const val WEATHER_KEY = "WEATHER"
     const val NIGHT_TIME_START = 18
     const val TRUE = "true"
     const val FALSE = "false"

@@ -27,7 +27,7 @@
 
     <include
         android:id="@+id/layout_daily"
-        layout="@layout/layout_daily"
+        layout="@layout/layout_hourly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_25"
@@ -38,13 +38,13 @@
 
     <include
         android:id="@+id/layout_footer"
-        layout="@layout/layout_footer_detail"
+        layout="@layout/layout_hourly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_25"
         android:layout_marginStart="@dimen/dp_25"
         android:layout_marginEnd="@dimen/dp_25"
-        app:layout_constraintTop_toBottomOf="@id/layout_hourly"
+        app:layout_constraintTop_toBottomOf="@id/layout_daily"
         app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

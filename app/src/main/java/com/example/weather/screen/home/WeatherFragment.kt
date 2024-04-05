@@ -13,8 +13,10 @@ import com.example.weather.data.repository.WeatherRepository
 import com.example.weather.data.repository.source.local.WeatherLocalDataSource
 import com.example.weather.data.repository.source.remote.WeatherRemoteDataSource
 import com.example.weather.databinding.FragmentWeatherBinding
+import com.example.weather.screen.detail.DetailFragment
 import com.example.weather.utils.Constant
 import com.example.weather.utils.PermissionUtils
+import com.example.weather.utils.addFragmentToActivity
 import com.example.weather.utils.base.BaseFragment
 import com.example.weather.utils.ext.getIcon
 import com.example.weather.utils.ext.kelvinToCelsius
@@ -53,7 +55,16 @@ class WeatherFragment private constructor() :
         viewBinding.layoutHeader.refreshIcon.setOnClickListener {
             onRefresh()
         }
-        viewBinding.layoutWeatherBasic.cardView.setOnClickListener { }
+        viewBinding.layoutWeatherBasic.cardView.setOnClickListener {
+            viewBinding.btnNavMap.visibility = View.GONE
+            viewBinding.container.isClickable = true
+            viewBinding.container.isFocusable = true
+            addFragmentToActivity(
+                childFragmentManager,
+                DetailFragment.newInstance(mWeatherList[mPosition]),
+                R.id.container
+            )
+        }
         viewBinding.btnNavMap.setOnClickListener { }
         viewBinding.layoutHeader.spinner.onItemSelectedListener = this
     }

@@ -11,6 +11,7 @@ import com.example.weather.utils.addFragmentToActivity
 import com.example.weather.utils.base.BaseActivity
 import com.example.weather.utils.distanceBetweenPoints
 import com.example.weather.utils.listener.OnFetchListener
+import com.example.weather.utils.replaceFragmentToActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -102,5 +103,9 @@ class MainActivity : BaseActivity(), OnFetchListener {
         } else {
             initWeatherView(location)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }
