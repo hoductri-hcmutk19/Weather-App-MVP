@@ -5,10 +5,10 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/dp_2"
-    android:layout_marginEnd="@dimen/dp_5"
-    android:backgroundTint="@color/cardBackgroundOpacity"
+    android:layout_marginEnd="@dimen/dp_7"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="@dimen/dp_12"
-    app:strokeColor="@color/cardStroke"
+    app:strokeColor="@android:color/transparent"
     app:strokeWidth="@dimen/dp_1">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +49,14 @@
             app:layout_constraintStart_toEndOf="@id/textHourlyTemperature"
             app:layout_constraintTop_toTopOf="@id/textHourlyTemperature" />
 
+        <View
+            android:id="@+id/divide"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textHourlyTemperature"/>
+
         <ImageView
             android:id="@+id/imageHourlyIcon"
             android:layout_width="@dimen/dp_45"
@@ -57,7 +65,7 @@
             android:src="@drawable/ic_clouds_day"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textHourlyTemperature" />
+            app:layout_constraintTop_toBottomOf="@+id/divide" />
 
         <TextView
             android:id="@+id/textHourlyTime"
@@ -72,6 +80,7 @@
             android:text="@string/_15_00"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15"
+            android:layout_marginTop="@dimen/dp_5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageHourlyIcon" />
