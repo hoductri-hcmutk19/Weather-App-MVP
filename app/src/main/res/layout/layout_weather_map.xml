@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_15"
         android:layout_marginEnd="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_15"
         android:layout_marginBottom="@dimen/dp_15"
@@ -37,8 +37,8 @@
 
         <ImageView
             android:id="@+id/iv_main_condition"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
+            android:layout_width="@dimen/dp_62"
+            android:layout_height="@dimen/dp_62"
             android:textColor="@color/white"
             android:src="@drawable/ic_clouds_day"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
             android:shadowRadius="15"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintHorizontal_bias="0.27"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,7 +71,7 @@
             android:shadowDx="2"
             android:shadowDy="4"
             android:shadowRadius="4"
-            android:layout_marginStart="@dimen/dp_25"
+            android:layout_marginStart="@dimen/dp_15"
             app:layout_constraintStart_toEndOf="@id/divide"
             app:layout_constraintTop_toTopOf="parent"
             android:text= "@string/ho_chi_minh_vn" />

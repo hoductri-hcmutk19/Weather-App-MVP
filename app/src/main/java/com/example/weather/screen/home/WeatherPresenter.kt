@@ -12,17 +12,17 @@ import java.util.concurrent.Executors
 class WeatherPresenter(
     private val repository: WeatherRepository
 ) : WeatherContract.Presenter {
-    private var view: WeatherContract.View? = null
+    private var mView: WeatherContract.View? = null
 
     private val mExecutor: Executor = Executors.newCachedThreadPool()
     private val mHandler = Handler(Looper.getMainLooper())
-    private var current: Weather? = null
-    private var hourly: Weather? = null
-    private var daily: Weather? = null
-    private var isDataFetching = false
+    private var mCurrent: Weather? = null
+    private var mHourly: Weather? = null
+    private var mDaily: Weather? = null
+    private var mIsDataFetching = false
 
     override fun setView(view: WeatherContract.View?) {
-        this.view = view
+        this.mView = view
     }
 
     override fun onStart() {
@@ -38,15 +38,15 @@ class WeatherPresenter(
     }
 
     private fun getRemoteWeather(latitude: Double, longitude: Double, isCurrent: Boolean) {
-        if (isDataFetching) {
+        if (mIsDataFetching) {
             return
         }
-        isDataFetching = true
+        mIsDataFetching = true
 
-        view?.onProgressLoading(true)
-        current = null
-        hourly = null
-        daily = null
+        mView?.onProgressLoading(true)
+        mCurrent = null
+        mHourly = null
+        mDaily = null
         try {
             mExecutor.execute {
                 repository.fetchWeatherForecastCurrent(
@@ -54,13 +54,13 @@ class WeatherPresenter(
                     longitude,
                     object : RequestCompleteListener<Weather> {
                         override fun onRequestSuccess(data: Weather) {
-                            current = data
-                            insertWeatherIfDataAvailable(current, hourly, daily, isCurrent)
+                            mCurrent = data
+                            insertWeatherIfDataAvailable(mCurrent, mHourly, mDaily, isCurrent)
                         }
 
                         override fun onRequestFailed(e: Exception?) {
-                            view?.onProgressLoading(false)
-                            e?.let { view?.onError(e) }
+                            mView?.onProgressLoading(false)
+                            e?.let { mView?.onError(e) }
                         }
                     }
                 )
@@ -69,13 +69,13 @@ class WeatherPresenter(
                     longitude,
                     object : RequestCompleteListener<Weather> {
                         override fun onRequestSuccess(data: Weather) {
-                            hourly = data
-                            insertWeatherIfDataAvailable(current, hourly, daily, isCurrent)
+                            mHourly = data
+                            insertWeatherIfDataAvailable(mCurrent, mHourly, mDaily, isCurrent)
                         }
 
                         override fun onRequestFailed(e: Exception?) {
-                            view?.onProgressLoading(false)
-                            e?.let { view?.onError(e) }
+                            mView?.onProgressLoading(false)
+                            e?.let { mView?.onError(e) }
                         }
                     }
                 )
@@ -84,13 +84,13 @@ class WeatherPresenter(
                     longitude,
                     object : RequestCompleteListener<Weather> {
                         override fun onRequestSuccess(data: Weather) {
-                            daily = data
-                            insertWeatherIfDataAvailable(current, hourly, daily, isCurrent)
+                            mDaily = data
+                            insertWeatherIfDataAvailable(mCurrent, mHourly, mDaily, isCurrent)
                         }
 
                         override fun onRequestFailed(e: Exception?) {
-                            view?.onProgressLoading(false)
-                            e?.let { view?.onError(e) }
+                            mView?.onProgressLoading(false)
+                            e?.let { mView?.onError(e) }
                         }
                     }
                 )
@@ -98,7 +98,7 @@ class WeatherPresenter(
         } catch (e: NetworkErrorException) {
             println(e)
         } finally {
-            isDataFetching = false
+            mIsDataFetching = false
         }
     }
 
@@ -119,23 +119,23 @@ class WeatherPresenter(
 
     private fun onGetDataAndSendToView(idWeather: String) {
         val listWeather = repository.getAllLocalWeathers()
-        view?.onGetSpinnerList(listWeather)
+        mView?.onGetSpinnerList(listWeather)
         val current = repository.getLocalWeather(idWeather)
         if (current != null) {
-            view?.onProgressLoading(false)
-            view?.onGetCurrentWeatherSuccess(current)
+            mView?.onProgressLoading(false)
+            mView?.onGetCurrentWeatherSuccess(current)
         }
-        isDataFetching = false
+        mIsDataFetching = false
     }
 
     private fun getLocalWeather() {
         val listWeather = repository.getAllLocalWeathers()
-        view?.onProgressLoading(false)
-        view?.onGetSpinnerList(listWeather)
+        mView?.onProgressLoading(false)
+        mView?.onGetSpinnerList(listWeather)
         if (listWeather.isNotEmpty()) {
             handleLocalWeatherList(listWeather)
         } else {
-            view?.onDBEmpty()
+            mView?.onDBEmpty()
         }
     }
 
@@ -143,12 +143,12 @@ class WeatherPresenter(
         var hasCurrentWeather = false
         for (weather in listWeather) {
             if (weather.isFavorite == "false") {
-                view?.onGetCurrentWeatherSuccess(weather)
+                mView?.onGetCurrentWeatherSuccess(weather)
                 hasCurrentWeather = true
             }
         }
         if (!hasCurrentWeather) {
-            view?.onGetCurrentWeatherSuccess(listWeather[0])
+            mView?.onGetCurrentWeatherSuccess(listWeather[0])
         }
     }
 

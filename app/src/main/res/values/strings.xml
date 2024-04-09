@@ -32,4 +32,5 @@
     <string name="search_here">Tìm kiếm địa điểm</string>
     <string name="cloudy">Nhiều mây</string>
     <string name="ho_chi_minh_vn">Hồ Chí Minh, VN</string>
+    <string name="location_not_exist">Vị trí bạn tìm kiếm không tồn tại. Vui lòng nhập vị trí khác!</string>
 </resources>
