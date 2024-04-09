@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView_map"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/dp_30"
+    android:backgroundTint="@color/cardMapBackground"
+    app:strokeWidth="@dimen/dp_1"
+    app:strokeColor="@color/cardStroke"
+    app:cardCornerRadius="@dimen/dp_22">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_main_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            android:fontFamily="@font/overpass"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="2"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/divide"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text= "@string/cloudy" />
+
+        <ImageView
+            android:id="@+id/iv_main_condition"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:textColor="@color/white"
+            android:src="@drawable/ic_clouds_day"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/divide"
+            app:layout_constraintTop_toBottomOf="@id/tv_main_condition" />
+
+        <View
+            android:id="@+id/divide"
+            android:layout_width="@dimen/dp_2"
+            android:layout_height="@dimen/dp_80"
+            android:background="@color/white"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="6"
+            android:shadowDy="10"
+            android:shadowRadius="15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            android:fontFamily="@font/overpass_bold"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="2"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:layout_marginStart="@dimen/dp_25"
+            app:layout_constraintStart_toEndOf="@id/divide"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text= "@string/ho_chi_minh_vn" />
+
+        <TextView
+            android:id="@+id/tv_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_38"
+            android:fontFamily="@font/overpass_bold"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="6"
+            android:shadowDy="10"
+            android:shadowRadius="15"
+            android:layout_marginTop="@dimen/dp_7"
+            android:layout_marginStart="@dimen/dp_25"
+            app:layout_constraintStart_toEndOf="@id/divide"
+            app:layout_constraintTop_toBottomOf="@id/tv_location"
+            android:text="@string/_29" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/degree_celsius_symbol"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_21"
+            android:fontFamily="@font/overpass_bold"
+            android:shadowColor="@color/textShadow"
+            android:shadowDx="6"
+            android:shadowDy="10"
+            android:shadowRadius="15"
+            app:layout_constraintStart_toEndOf="@id/tv_temperature"
+            app:layout_constraintTop_toTopOf="@id/tv_temperature" />
+
+        <ImageView
+            android:id="@+id/ic_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star_white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

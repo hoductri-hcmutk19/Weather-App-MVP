@@ -29,4 +29,7 @@
     <string name="_15_00">15:00</string>
     <string name="tomorrow">Ngày mai</string>
     <string name="after_tomorrow">Ngày mốt</string>
+    <string name="search_here">Tìm kiếm địa điểm</string>
+    <string name="cloudy">Nhiều mây</string>
+    <string name="ho_chi_minh_vn">Hồ Chí Minh, VN</string>
 </resources>
