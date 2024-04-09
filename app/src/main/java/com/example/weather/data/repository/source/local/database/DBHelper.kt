@@ -13,6 +13,7 @@ import com.example.weather.utils.Constant
 import com.example.weather.utils.DBUtils
 import org.json.JSONObject
 
+@Suppress("TooManyFunctions")
 class DBHelper(
     context: Context?
 ) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION), IDBHelper {
@@ -37,7 +38,7 @@ class DBHelper(
     }
 
     @SuppressLint("Range")
-    override fun insertWeather(current: Weather, hourly: Weather, daily: Weather, isFavorite: String) {
+    override fun insertWeatherSplit(current: Weather, hourly: Weather, daily: Weather, isFavorite: String) {
         val idWeather =
             (current.city + current.country)
         val cursorWeather: Cursor = if (isFavorite == Constant.TRUE) {
@@ -81,6 +82,58 @@ class DBHelper(
             }
         }
         daily.weatherDailyList?.let { listData ->
+            listData.forEach { element ->
+                insertBasic(element, idWeather, TABLE_DAILY)
+            }
+        }
+        cursorWeather.close()
+    }
+
+    @SuppressLint("Range")
+    override fun insertWeatherFull(weather: Weather, isFavorite: String) {
+        val idWeather =
+            (weather.city + weather.country)
+        val cursorWeather: Cursor = if (isFavorite == Constant.TRUE) {
+            readableDatabase.rawQuery(
+                "SELECT * FROM $TABLE_WEATHER WHERE $COLUMN_ID_WEATHER = '$idWeather'",
+                null
+            )
+        } else {
+            readableDatabase.rawQuery(
+                "SELECT * FROM $TABLE_WEATHER WHERE ${WeatherEntry.IS_FAVORITE} = '$FALSE'",
+                null
+            )
+        }
+        cursorWeather.apply {
+            if (moveToFirst() && count > 0) {
+                if (isFavorite == Constant.TRUE) {
+                    deleteWeather(idWeather)
+                } else {
+                    val city = cursorWeather.getString(getColumnIndex(WeatherEntry.CITY))
+                    val country = cursorWeather.getString(getColumnIndex(WeatherEntry.COUNTRY))
+                    val idWeatherNoFavorite = city + country
+                    deleteWeather(idWeatherNoFavorite)
+                }
+            }
+        }
+
+        ContentValues().apply {
+            put(COLUMN_ID_WEATHER, idWeather)
+            put(WeatherEntry.LATITUDE, weather.latitude)
+            put(WeatherEntry.LONGITUDE, weather.longitude)
+            put(WeatherEntry.TIME_ZONE, weather.timeZone)
+            put(WeatherEntry.CITY, weather.city)
+            put(WeatherEntry.COUNTRY, weather.country)
+            put(WeatherEntry.IS_FAVORITE, isFavorite)
+            writableDatabase.insert(TABLE_WEATHER, null, this)
+        }
+        insertBasic(weather.weatherCurrent, idWeather, TABLE_CURRENT)
+        weather.weatherHourlyList?.let { listData ->
+            listData.forEach { element ->
+                insertBasic(element, idWeather, TABLE_HOURLY)
+            }
+        }
+        weather.weatherDailyList?.let { listData ->
             listData.forEach { element ->
                 insertBasic(element, idWeather, TABLE_DAILY)
             }

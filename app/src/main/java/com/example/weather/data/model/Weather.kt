@@ -13,8 +13,8 @@ data class Weather(
     var country: String? = "",
     var isFavorite: String? = "",
     val weatherCurrent: WeatherBasic?,
-    val weatherHourlyList: List<WeatherBasic>?,
-    val weatherDailyList: List<WeatherBasic>?
+    var weatherHourlyList: List<WeatherBasic>?,
+    var weatherDailyList: List<WeatherBasic>?
 ) : Parcelable
 
 object WeatherEntry {
