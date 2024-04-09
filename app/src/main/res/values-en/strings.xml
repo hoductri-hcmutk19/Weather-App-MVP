@@ -30,4 +30,7 @@
     <string name="_15_00">15:00</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="after_tomorrow">After tomorrow</string>
+    <string name="search_here">Search here</string>
+    <string name="cloudy">Cloudy</string>
+    <string name="ho_chi_minh_vn">Ho Chi Minh, VN</string>
 </resources>
