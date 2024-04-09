@@ -32,7 +32,6 @@ class WeatherFragment private constructor() :
     WeatherContract.View,
     AdapterView.OnItemSelectedListener {
 
-    private var mRepository: WeatherRepository? = null
     private var mPresenter: WeatherPresenter? = null
     private var mLatitude: Double = 0.0
     private var mLongitude: Double = 0.0
@@ -41,6 +40,7 @@ class WeatherFragment private constructor() :
     private var mPosition: Int = 0
     private var mListItemSpinner: ArrayList<String> = arrayListOf()
     private var mSpinnerCheck: Int = 0
+    private var mIsAppStarted: Boolean = false
 
     private lateinit var mWeatherList: List<Weather>
     private lateinit var mSpinnerAdapter: ArrayAdapter<String>
@@ -75,22 +75,30 @@ class WeatherFragment private constructor() :
                 )
             }
         }
+
+        val initialSelectedPosition = viewBinding.layoutHeader.spinner.selectedItemPosition
+        viewBinding.layoutHeader.spinner.setSelection(initialSelectedPosition, false)
         viewBinding.layoutHeader.spinner.onItemSelectedListener = this
     }
 
     override fun initData() {
-        mRepository = context?.let { context ->
+        val repository = context?.let { context ->
             WeatherRepository.getInstance(
                 WeatherLocalDataSource.getInstance(context),
                 WeatherRemoteDataSource.getInstance()
             )
         }
-        mPresenter = mRepository?.let { WeatherPresenter(it) }
+        mPresenter = repository?.let { WeatherPresenter(it) }
         mPresenter?.setView(this)
         arguments?.let {
             mLatitude = it.getDouble(Constant.LATITUDE_KEY)
             mLongitude = it.getDouble(Constant.LONGITUDE_KEY)
-            mPresenter?.getWeather(mLatitude, mLongitude, mIsNetworkEnable, true)
+            if (!mIsAppStarted) {
+                mIsAppStarted = true
+                mPresenter?.getWeather(mLatitude, mLongitude, mIsNetworkEnable, true)
+            } else {
+                onRefresh()
+            }
         }
     }
 
@@ -152,7 +160,7 @@ class WeatherFragment private constructor() :
             viewBinding.layoutWeatherBasic.tvDateTime.text =
                 "Today, " + weatherCurrent.dateTime?.unixTimestampToDateTimeString()
             viewBinding.layoutWeatherBasic.tvTemperature.text = weatherCurrent.temperature?.kelvinToCelsius().toString()
-            viewBinding.layoutWeatherBasic.tvDescription.text = weather.city
+            viewBinding.layoutWeatherBasic.tvDescription.text = weatherCurrent.weatherDescription
             viewBinding.layoutWeatherBasic.layoutBasicDetail.tvWindValue.text =
                 weatherCurrent.windSpeed?.mpsToKmph().toString() + " km/h"
             viewBinding.layoutWeatherBasic.layoutBasicDetail.tvHumidityValue.text =

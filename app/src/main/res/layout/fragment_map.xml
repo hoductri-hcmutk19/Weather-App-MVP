@@ -39,13 +39,17 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_15"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_60"
+        <android.widget.SearchView
+            android:id="@+id/mapSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_45"
             android:layout_marginEnd="@dimen/dp_25"
+            android:queryHint="@string/search_here"
             android:background="@android:color/transparent"
-            android:hint="@string/search_here"/>
+            android:iconifiedByDefault="false"
+            android:searchIcon="@null"
+            android:searchHintIcon="@null"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -78,6 +82,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_current_location"
         tools:ignore="SpeakableTextPresentCheck" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="@color/white"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <include
         android:id="@+id/layout_weather_map"

@@ -13,9 +13,18 @@ data class Weather(
     var country: String? = "",
     var isFavorite: String? = "",
     val weatherCurrent: WeatherBasic?,
-    val weatherHourlyList: List<WeatherBasic>?,
-    val weatherDailyList: List<WeatherBasic>?
-) : Parcelable
+    var weatherHourlyList: List<WeatherBasic>?,
+    var weatherDailyList: List<WeatherBasic>?
+) : Parcelable {
+
+    fun getLocation(): String {
+        return if (!city.isNullOrEmpty() && !country.isNullOrEmpty()) {
+            "$city, $country"
+        } else {
+            "Unknown"
+        }
+    }
+}
 
 object WeatherEntry {
     const val CURRENTLY_OBJECT = "currently"
