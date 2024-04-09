@@ -33,4 +33,5 @@
     <string name="search_here">Search here</string>
     <string name="cloudy">Cloudy</string>
     <string name="ho_chi_minh_vn">Ho Chi Minh, VN</string>
+    <string name="location_not_exist">The location you are looking for does not exist. Please enter another location!</string>
 </resources>

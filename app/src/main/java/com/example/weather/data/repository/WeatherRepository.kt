@@ -7,6 +7,7 @@ import com.example.weather.data.repository.source.remote.WeatherRemoteDataSource
 import com.example.weather.screen.RequestCompleteListener
 import com.example.weather.utils.Constant
 
+@Suppress("TooManyFunctions")
 class WeatherRepository private constructor(
     private val localDataSource: WeatherLocalDataSource,
     private val remoteDataSource: WeatherRemoteDataSource
@@ -16,8 +17,16 @@ class WeatherRepository private constructor(
         localDataSource.insertCurrentWeather(current, hourly, daily)
     }
 
+    override fun insertCurrentWeather(weather: Weather) {
+        localDataSource.insertCurrentWeather(weather)
+    }
+
     override fun insertFavoriteWeather(current: Weather, hourly: Weather, daily: Weather) {
         localDataSource.insertFavoriteWeather(current, hourly, daily)
+    }
+
+    override fun insertFavoriteWeather(weather: Weather) {
+        localDataSource.insertFavoriteWeather(weather)
     }
 
     override fun getAllLocalWeathers(): List<Weather> {
