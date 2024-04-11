@@ -29,11 +29,17 @@ class WeatherPresenter(
         // Register
     }
 
-    override fun getWeather(latitude: Double, longitude: Double, isNetworkEnable: Boolean, isCurrent: Boolean) {
+    override fun getWeather(
+        latitude: Double,
+        longitude: Double,
+        position: Int,
+        isNetworkEnable: Boolean,
+        isCurrent: Boolean
+    ) {
         if (isNetworkEnable) {
             getRemoteWeather(latitude, longitude, isCurrent)
         } else {
-            getLocalWeather()
+            getLocalWeather(position)
         }
     }
 
@@ -128,27 +134,14 @@ class WeatherPresenter(
         mIsDataFetching = false
     }
 
-    private fun getLocalWeather() {
+    private fun getLocalWeather(position: Int) {
         val listWeather = repository.getAllLocalWeathers()
         mView?.onProgressLoading(false)
         mView?.onGetSpinnerList(listWeather)
         if (listWeather.isNotEmpty()) {
-            handleLocalWeatherList(listWeather)
+            mView?.onGetCurrentWeatherSuccess(listWeather[position])
         } else {
             mView?.onDBEmpty()
-        }
-    }
-
-    private fun handleLocalWeatherList(listWeather: List<Weather>) {
-        var hasCurrentWeather = false
-        for (weather in listWeather) {
-            if (weather.isFavorite == "false") {
-                mView?.onGetCurrentWeatherSuccess(weather)
-                hasCurrentWeather = true
-            }
-        }
-        if (!hasCurrentWeather) {
-            mView?.onGetCurrentWeatherSuccess(listWeather[0])
         }
     }
 

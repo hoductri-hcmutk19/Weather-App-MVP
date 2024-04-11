@@ -21,6 +21,7 @@ import com.example.weather.screen.detail.DetailFragment
 import com.example.weather.screen.favorite.FavoriteFragment
 import com.example.weather.utils.Constant
 import com.example.weather.utils.PermissionUtils
+import com.example.weather.utils.Utils
 import com.example.weather.utils.base.BaseFragment
 import com.example.weather.utils.ext.getIcon
 import com.example.weather.utils.ext.kelvinToCelsius
@@ -49,11 +50,13 @@ class MapFragment private constructor() : BaseFragment<FragmentMapBinding>(), Ma
     private var mSelectedLongitude: Double = 0.0
     private var mWeather: Weather? = null
     private var mIsNetworkEnable: Boolean = false
+    private var mIsWeatherLocalExist: Boolean = true
 
     override fun inflateViewBinding(inflater: LayoutInflater): FragmentMapBinding {
         return FragmentMapBinding.inflate(inflater)
     }
 
+    @Suppress("NestedBlockDepth")
     override fun initData() {
         val repository = context?.let { context ->
             WeatherRepository.getInstance(
@@ -67,9 +70,21 @@ class MapFragment private constructor() : BaseFragment<FragmentMapBinding>(), Ma
             mCurrentLatitude = it.getDouble(Constant.LATITUDE_KEY)
             mCurrentLongitude = it.getDouble(Constant.LONGITUDE_KEY)
             if (mSelectedLatitude == 0.0 && mSelectedLongitude == 0.0) {
-                mPresenter?.getWeather(mCurrentLatitude, mCurrentLongitude)
+                mPresenter?.getWeatherRemote(mCurrentLatitude, mCurrentLongitude)
             } else {
-                mPresenter?.getWeather(mSelectedLatitude, mSelectedLongitude)
+                val dateTime = mWeather?.weatherCurrent?.dateTime
+                if (dateTime?.let { dateTime -> Utils.checkTimeInterval(dateTime) } == true) {
+                    mPresenter?.getWeatherRemote(mSelectedLatitude, mSelectedLongitude)
+                } else {
+                    val id = mWeather?.getId()
+                    if (mWeather?.isFavorite == Constant.TRUE && id != null) {
+                        mPresenter?.checkWeatherLocal(id)
+                        if (!mIsWeatherLocalExist) {
+                            mWeather?.isFavorite = Constant.FALSE
+                        }
+                    }
+                    mWeather?.let { weather -> bindDataToView(weather) }
+                }
             }
         }
     }
@@ -79,7 +94,7 @@ class MapFragment private constructor() : BaseFragment<FragmentMapBinding>(), Ma
         mapFragment.getMapAsync(this)
 
         viewBinding.currentLocationButton.setOnClickListener {
-            mPresenter?.getWeather(mCurrentLatitude, mCurrentLongitude)
+            mPresenter?.getWeatherRemote(mCurrentLatitude, mCurrentLongitude)
             moveToLocation(mCurrentLatitude, mCurrentLongitude)
         }
 
@@ -97,7 +112,7 @@ class MapFragment private constructor() : BaseFragment<FragmentMapBinding>(), Ma
                     if (addressList.isNotEmpty()) {
                         mSelectedLatitude = addressList[0].latitude
                         mSelectedLongitude = addressList[0].longitude
-                        mPresenter?.getWeather(mSelectedLatitude, mSelectedLongitude)
+                        mPresenter?.getWeatherRemote(mSelectedLatitude, mSelectedLongitude)
                         moveToLocation(mSelectedLatitude, mSelectedLongitude)
                     } else {
                         Toast.makeText(
@@ -150,8 +165,10 @@ class MapFragment private constructor() : BaseFragment<FragmentMapBinding>(), Ma
                 viewBinding.layoutWeatherMap.icStar.isClickable = true
             } else {
                 viewBinding.layoutWeatherMap.icStar.setImageResource(R.drawable.ic_star_white)
-                val id = mWeather?.city + mWeather?.country
-                mPresenter?.removeFavoriteWeather(id)
+                val id = mWeather?.getId()
+                if (id != null) {
+                    mPresenter?.removeFavoriteWeather(id)
+                }
                 mWeather?.isFavorite = Constant.FALSE
                 viewBinding.layoutWeatherMap.icStar.isClickable = true
             }
@@ -175,7 +192,7 @@ class MapFragment private constructor() : BaseFragment<FragmentMapBinding>(), Ma
             mGoogleMap?.clear()
             mSelectedLatitude = position.latitude
             mSelectedLongitude = position.longitude
-            mPresenter?.getWeather(mSelectedLatitude, mSelectedLongitude)
+            mPresenter?.getWeatherRemote(mSelectedLatitude, mSelectedLongitude)
             addMarker(position)
         }
         mGoogleMap?.setOnMarkerClickListener { marker ->
@@ -233,6 +250,10 @@ class MapFragment private constructor() : BaseFragment<FragmentMapBinding>(), Ma
     override fun onGetCurrentWeatherSuccess(weather: Weather) {
         mWeather = weather
         mWeather?.let { bindDataToView(it) }
+    }
+
+    override fun onGetWeatherLocalSuccess(isExist: Boolean) {
+        mIsWeatherLocalExist = isExist
     }
 
     @Suppress("NestedBlockDepth")

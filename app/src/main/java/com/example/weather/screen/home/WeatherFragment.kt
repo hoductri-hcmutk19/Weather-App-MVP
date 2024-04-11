@@ -18,6 +18,7 @@ import com.example.weather.screen.detail.DetailFragment
 import com.example.weather.screen.map.MapFragment
 import com.example.weather.utils.Constant
 import com.example.weather.utils.PermissionUtils
+import com.example.weather.utils.Utils
 import com.example.weather.utils.base.BaseFragment
 import com.example.weather.utils.ext.getIcon
 import com.example.weather.utils.ext.kelvinToCelsius
@@ -67,12 +68,14 @@ class WeatherFragment private constructor() :
             }
         }
         viewBinding.btnNavMap.setOnClickListener {
-            activity?.let {
-                (it as AppCompatActivity).replaceFragmentToActivity(
-                    it.supportFragmentManager,
-                    MapFragment.newInstance(mLatitude, mLongitude),
-                    R.id.container
-                )
+            if (mIsNetworkEnable) {
+                activity?.let {
+                    (it as AppCompatActivity).replaceFragmentToActivity(
+                        it.supportFragmentManager,
+                        MapFragment.newInstance(mLatitude, mLongitude),
+                        R.id.container
+                    )
+                }
             }
         }
 
@@ -81,6 +84,7 @@ class WeatherFragment private constructor() :
         viewBinding.layoutHeader.spinner.onItemSelectedListener = this
     }
 
+    @Suppress("NestedBlockDepth")
     override fun initData() {
         val repository = context?.let { context ->
             WeatherRepository.getInstance(
@@ -95,9 +99,27 @@ class WeatherFragment private constructor() :
             mLongitude = it.getDouble(Constant.LONGITUDE_KEY)
             if (!mIsAppStarted) {
                 mIsAppStarted = true
-                mPresenter?.getWeather(mLatitude, mLongitude, mIsNetworkEnable, true)
+                mPresenter?.getWeather(mLatitude, mLongitude, mPosition, mIsNetworkEnable, true)
             } else {
-                onRefresh()
+                if (mPosition != 0) { // Fix spinner auto click first item
+                    mSpinnerCheck = 0
+                }
+                if (mIsNetworkEnable) {
+                    val dateTime = mWeatherList[mPosition].weatherCurrent?.dateTime
+                    if (dateTime?.let { dateTime -> Utils.checkTimeInterval(dateTime) } == true) {
+                        onRefresh()
+                    } else {
+                        val latitude = mWeatherList[mPosition].latitude
+                        val longitude = mWeatherList[mPosition].longitude
+                        latitude?.let { lat ->
+                            longitude?.let { lon ->
+                                mPresenter?.getWeather(lat, lon, mPosition)
+                            }
+                        }
+                    }
+                } else {
+                    onRefresh()
+                }
             }
         }
     }
@@ -160,7 +182,7 @@ class WeatherFragment private constructor() :
             viewBinding.layoutWeatherBasic.tvDateTime.text =
                 "Today, " + weatherCurrent.dateTime?.unixTimestampToDateTimeString()
             viewBinding.layoutWeatherBasic.tvTemperature.text = weatherCurrent.temperature?.kelvinToCelsius().toString()
-            viewBinding.layoutWeatherBasic.tvDescription.text = weatherCurrent.weatherDescription
+            viewBinding.layoutWeatherBasic.tvDescription.text = weather.city
             viewBinding.layoutWeatherBasic.layoutBasicDetail.tvWindValue.text =
                 weatherCurrent.windSpeed?.mpsToKmph().toString() + " km/h"
             viewBinding.layoutWeatherBasic.layoutBasicDetail.tvHumidityValue.text =
@@ -177,17 +199,13 @@ class WeatherFragment private constructor() :
             val itemID = mWeatherList[pos].city + mWeatherList[pos].country
             val currentID = mWeatherCurrent?.city + mWeatherCurrent?.country
             val isCurrent = itemID == currentID
-            if (mIsNetworkEnable) {
-                if (itemLatitude != null && itemLongitude != null) {
-                    mPresenter?.getWeather(itemLatitude, itemLongitude, true, isCurrent)
-                }
-            } else {
-                if (mWeatherList.isEmpty()) {
-                    if (itemLatitude != null && itemLongitude != null) {
-                        mPresenter?.getWeather(itemLatitude, itemLongitude, false, isCurrent)
-                    }
+
+            if (itemLatitude != null && itemLongitude != null) {
+                val dateTime = mWeatherList[pos].weatherCurrent?.dateTime
+                if (dateTime?.let { dateTime -> Utils.checkTimeInterval(dateTime) } == true) {
+                    mPresenter?.getWeather(itemLatitude, itemLongitude, mPosition, mIsNetworkEnable, isCurrent)
                 } else {
-                    bindDataToView(mWeatherList[pos])
+                    mPresenter?.getWeather(itemLatitude, itemLongitude, mPosition)
                 }
             }
         }
@@ -220,19 +238,16 @@ class WeatherFragment private constructor() :
         val itemID = mWeatherList[mPosition].city + mWeatherList[mPosition].country
         val currentID = mWeatherCurrent?.city + mWeatherCurrent?.country
         val isCurrent = itemID == currentID
-        if (mIsNetworkEnable) {
-            mWeatherList[mPosition].latitude?.let { latitude ->
-                mWeatherList[mPosition].longitude?.let { longitude ->
-                    mPresenter?.getWeather(
-                        latitude,
-                        longitude,
-                        true,
-                        isCurrent
-                    )
-                }
+        mWeatherList[mPosition].latitude?.let { latitude ->
+            mWeatherList[mPosition].longitude?.let { longitude ->
+                mPresenter?.getWeather(
+                    latitude,
+                    longitude,
+                    mPosition,
+                    mIsNetworkEnable,
+                    isCurrent
+                )
             }
-        } else {
-            bindDataToView(mWeatherList[mPosition])
         }
     }
 

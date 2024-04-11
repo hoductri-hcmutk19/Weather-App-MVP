@@ -23,4 +23,10 @@ object Utils {
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return Constant.EARTH_RADIUS * c
     }
+
+    fun checkTimeInterval(dateTime: Int): Boolean {
+        val currentTimeUnix = System.currentTimeMillis() / Constant.MILLIS_IN_SECOND
+        val interval = currentTimeUnix - dateTime
+        return interval > Constant.FETCH_INTERVAL
+    }
 }

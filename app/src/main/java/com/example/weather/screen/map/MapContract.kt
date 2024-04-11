@@ -9,12 +9,14 @@ class MapContract {
     interface View {
         fun onProgressLoading(isLoading: Boolean)
         fun onGetCurrentWeatherSuccess(weather: Weather)
+        fun onGetWeatherLocalSuccess(isExist: Boolean)
         fun onInternetConnectionFailed()
         fun onError(exception: Exception)
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getWeather(latitude: Double, longitude: Double)
+        fun getWeatherRemote(latitude: Double, longitude: Double)
+        fun checkWeatherLocal(id: String)
         fun favoriteWeather(weather: Weather)
         fun removeFavoriteWeather(id: String)
     }
