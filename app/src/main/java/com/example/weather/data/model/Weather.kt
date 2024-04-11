@@ -24,6 +24,14 @@ data class Weather(
             "Unknown"
         }
     }
+
+    fun getId(): String {
+        return if (!city.isNullOrEmpty() && !country.isNullOrEmpty()) {
+            "$city$country"
+        } else {
+            "Unknown"
+        }
+    }
 }
 
 object WeatherEntry {

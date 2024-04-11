@@ -2,6 +2,8 @@
 
 package com.example.weather.utils.ext
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.weather.R
 import com.example.weather.data.anotation.Icon
 import com.example.weather.data.anotation.Icon.Companion.CLEAR
@@ -13,6 +15,7 @@ import com.example.weather.utils.Constant.MPS_TO_KMPH_NUMBER
 import com.example.weather.utils.Constant.NIGHT_TIME_END
 import com.example.weather.utils.Constant.NIGHT_TIME_START
 import java.text.SimpleDateFormat
+import java.time.ZoneOffset
 import java.util.*
 
 fun Int.unixTimestampToDateTimeString(): String {
@@ -103,6 +106,12 @@ fun Int.unixTimestampToTimeString(): String {
     }
 
     return this.toString()
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun Int.offsetToUTC(): String {
+    val zoneOffset = ZoneOffset.ofTotalSeconds(this)
+    return "UTC$zoneOffset"
 }
 
 /**

@@ -34,4 +34,7 @@
     <string name="cloudy">Cloudy</string>
     <string name="ho_chi_minh_vn">Ho Chi Minh, VN</string>
     <string name="location_not_exist">The location you are looking for does not exist. Please enter another location!</string>
+    <string name="list_of_your_favorite_places">List of your favorite places</string>
+    <string name="utc_07_00">UTC+07:00</string>
+    <string name="delete">Delete</string>
 </resources>
