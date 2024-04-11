@@ -18,6 +18,7 @@ import com.example.weather.data.repository.source.local.WeatherLocalDataSource
 import com.example.weather.data.repository.source.remote.WeatherRemoteDataSource
 import com.example.weather.databinding.FragmentMapBinding
 import com.example.weather.screen.detail.DetailFragment
+import com.example.weather.screen.favorite.FavoriteFragment
 import com.example.weather.utils.Constant
 import com.example.weather.utils.PermissionUtils
 import com.example.weather.utils.base.BaseFragment
@@ -115,8 +116,15 @@ class MapFragment private constructor() : BaseFragment<FragmentMapBinding>(), Ma
         })
 
         viewBinding.favoriteLocationButton.setOnClickListener {
-            // TODO implement later
+            activity?.let {
+                (it as AppCompatActivity).replaceFragmentToActivity(
+                    it.supportFragmentManager,
+                    FavoriteFragment.newInstance(),
+                    R.id.container
+                )
+            }
         }
+
         viewBinding.icBack.setOnClickListener {
             goBackFragment()
         }
