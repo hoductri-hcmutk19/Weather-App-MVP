@@ -16,6 +16,12 @@ class WeatherContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getWeather(latitude: Double, longitude: Double, isNetworkEnable: Boolean, isCurrent: Boolean)
+        fun getWeather(
+            latitude: Double,
+            longitude: Double,
+            position: Int,
+            isNetworkEnable: Boolean = false,
+            isCurrent: Boolean = false
+        )
     }
 }

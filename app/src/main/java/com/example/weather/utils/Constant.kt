@@ -24,4 +24,6 @@ object Constant {
     const val SPLASH_TIME = 1900L // ms
     const val MARKER_SIZE = 125
     const val ZOOM_RATIO = 12f
+    const val MILLIS_IN_SECOND = 1000
+    const val FETCH_INTERVAL = 420 // 7 min
 }

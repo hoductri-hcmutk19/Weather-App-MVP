@@ -42,7 +42,7 @@ class MapPresenter(
         repository.deleteWeather(id)
     }
 
-    override fun getWeather(latitude: Double, longitude: Double) {
+    override fun getWeatherRemote(latitude: Double, longitude: Double) {
         if (mIsDataFetching) {
             return
         }
@@ -104,6 +104,15 @@ class MapPresenter(
             println(e)
         } finally {
             mIsDataFetching = false
+        }
+    }
+
+    override fun checkWeatherLocal(id: String) {
+        val weather = repository.getLocalWeather(id)
+        if (weather != null) {
+            mView?.onGetWeatherLocalSuccess(true)
+        } else {
+            mView?.onGetWeatherLocalSuccess(false)
         }
     }
 
