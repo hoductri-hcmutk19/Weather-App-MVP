@@ -33,4 +33,7 @@
     <string name="cloudy">Nhiều mây</string>
     <string name="ho_chi_minh_vn">Hồ Chí Minh, VN</string>
     <string name="location_not_exist">Vị trí bạn tìm kiếm không tồn tại. Vui lòng nhập vị trí khác!</string>
+    <string name="list_of_your_favorite_places">Danh sách các địa điểm yêu thích</string>
+    <string name="utc_07_00">UTC+07:00</string>
+    <string name="delete">Xóa</string>
 </resources>
