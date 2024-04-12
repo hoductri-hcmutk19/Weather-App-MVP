@@ -182,7 +182,7 @@ class WeatherFragment private constructor() :
             viewBinding.layoutWeatherBasic.tvDateTime.text =
                 "Today, " + weatherCurrent.dateTime?.unixTimestampToDateTimeString()
             viewBinding.layoutWeatherBasic.tvTemperature.text = weatherCurrent.temperature?.kelvinToCelsius().toString()
-            viewBinding.layoutWeatherBasic.tvDescription.text = weather.city
+            viewBinding.layoutWeatherBasic.tvDescription.text = weatherCurrent.weatherDescription
             viewBinding.layoutWeatherBasic.layoutBasicDetail.tvWindValue.text =
                 weatherCurrent.windSpeed?.mpsToKmph().toString() + " km/h"
             viewBinding.layoutWeatherBasic.layoutBasicDetail.tvHumidityValue.text =
