@@ -17,8 +17,8 @@ import com.example.weather.utils.listener.OnFetchListener
 
 object PermissionUtils {
     private const val PERMISSION_LOCATION_ID = 44
-    private const val MIN_TIME_TRIGGER = 600000L // 10 min
-    private const val MIN_DISTANCE_TRIGGER = 5000F // 5 km
+    private const val MIN_TIME_TRIGGER = 0L // 10 min
+    private const val MIN_DISTANCE_TRIGGER = 0F // 5 km
 
     fun requestPermissions(activity: Activity) {
         ActivityCompat.requestPermissions(
