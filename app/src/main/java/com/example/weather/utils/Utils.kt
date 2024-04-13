@@ -1,5 +1,10 @@
 package com.example.weather.utils
 
+import com.example.weather.utils.Constant.HOURS_IN_DAY
+import com.example.weather.utils.Constant.MIN_DELAY_INIT_WORKER
+import com.example.weather.utils.Constant.MORNING_NOTIFICATION_TIME
+import com.example.weather.utils.Constant.SECONDS_IN_HOUR
+import com.example.weather.utils.ext.unixTimestampToHourString
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
@@ -28,5 +33,18 @@ object Utils {
         val currentTimeUnix = System.currentTimeMillis() / Constant.MILLIS_IN_SECOND
         val interval = currentTimeUnix - dateTime
         return interval > Constant.FETCH_INTERVAL
+    }
+
+    fun setTimeInitWorker(): Long {
+        var delayTime = MIN_DELAY_INIT_WORKER
+        val currentTimeUnix = System.currentTimeMillis() / Constant.MILLIS_IN_SECOND
+        val currentHour = currentTimeUnix.toInt().unixTimestampToHourString().toInt()
+        return if (currentHour > MORNING_NOTIFICATION_TIME) {
+            delayTime += (HOURS_IN_DAY - currentHour + MORNING_NOTIFICATION_TIME) * SECONDS_IN_HOUR
+            delayTime
+        } else {
+            delayTime += (MORNING_NOTIFICATION_TIME - currentHour) * SECONDS_IN_HOUR
+            delayTime
+        }
     }
 }

@@ -229,8 +229,13 @@ class WeatherFragment private constructor() :
     }
 
     override fun onDBEmpty() {
-        viewBinding.tvError.visibility = View.VISIBLE
-        viewBinding.outputGroup.visibility = View.GONE
+        if (mIsNetworkEnable){
+            mPresenter?.getWeather(mLatitude, mLongitude, mPosition, isNetworkEnable = true, isCurrent = true)
+        } else {
+            viewBinding.tvError.visibility = View.VISIBLE
+            viewBinding.outputGroup.visibility = View.GONE
+            viewBinding.layoutHeader.refreshIcon.visibility = View.GONE
+        }
     }
 
     private fun onRefresh() {
