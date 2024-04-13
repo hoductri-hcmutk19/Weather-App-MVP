@@ -8,8 +8,10 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.example.weather.R
 import com.example.weather.utils.listener.MyLocationListener
@@ -20,12 +22,14 @@ object PermissionUtils {
     private const val MIN_TIME_TRIGGER = 600000L // 10 min
     private const val MIN_DISTANCE_TRIGGER = 5000F // 5 km
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun requestPermissions(activity: Activity) {
         ActivityCompat.requestPermissions(
             activity,
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.POST_NOTIFICATIONS
             ),
             PERMISSION_LOCATION_ID
         )
@@ -66,6 +70,7 @@ object PermissionUtils {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun onRequestPermissionResult(
         requestCode: Int,
         grantResults: IntArray,
@@ -82,6 +87,7 @@ object PermissionUtils {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun checkPermissions(activity: Activity): Boolean {
         return (
             ActivityCompat.checkSelfPermission(
@@ -92,6 +98,11 @@ object PermissionUtils {
                 ActivityCompat.checkSelfPermission(
                 activity.applicationContext,
                 Manifest.permission.ACCESS_FINE_LOCATION
+            )
+                == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                activity.applicationContext,
+                Manifest.permission.POST_NOTIFICATIONS
             )
                 == PackageManager.PERMISSION_GRANTED
             )

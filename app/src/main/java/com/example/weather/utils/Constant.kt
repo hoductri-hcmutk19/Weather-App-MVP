@@ -26,4 +26,8 @@ object Constant {
     const val ZOOM_RATIO = 12f
     const val MILLIS_IN_SECOND = 1000
     const val FETCH_INTERVAL = 420 // 7 min
+    const val MIN_DELAY_INIT_WORKER = 60L // 1min
+    const val HOURS_IN_DAY = 24L
+    const val MORNING_NOTIFICATION_TIME = 8
+    const val SECONDS_IN_HOUR = 3600
 }

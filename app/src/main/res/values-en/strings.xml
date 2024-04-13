@@ -37,4 +37,8 @@
     <string name="list_of_your_favorite_places">List of your favorite places</string>
     <string name="utc_07_00">UTC+07:00</string>
     <string name="delete">Delete</string>
+    <string name="good_morning">Good morning</string>
+    <string name="notification_content">HiWeather wishes you a good day!</string>
+    <string name="temperature">Temperature:</string>
+    <string name="wind_speed">Wind:</string>
 </resources>
