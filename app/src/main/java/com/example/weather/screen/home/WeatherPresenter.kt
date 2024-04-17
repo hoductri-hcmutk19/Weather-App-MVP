@@ -19,7 +19,7 @@ class WeatherPresenter(
     private var mCurrent: Weather? = null
     private var mHourly: Weather? = null
     private var mDaily: Weather? = null
-    private var mIsDataFetching = false
+    var mIsDataFetching = false
 
     override fun setView(view: WeatherContract.View?) {
         this.mView = view
@@ -43,7 +43,7 @@ class WeatherPresenter(
         }
     }
 
-    private fun getRemoteWeather(latitude: Double, longitude: Double, isCurrent: Boolean) {
+    fun getRemoteWeather(latitude: Double, longitude: Double, isCurrent: Boolean) {
         if (mIsDataFetching) {
             return
         }
@@ -123,7 +123,7 @@ class WeatherPresenter(
         }
     }
 
-    private fun onGetDataAndSendToView(idWeather: String) {
+    fun onGetDataAndSendToView(idWeather: String) {
         val listWeather = repository.getAllLocalWeathers()
         mView?.onGetSpinnerList(listWeather)
         val current = repository.getLocalWeather(idWeather)
@@ -134,7 +134,7 @@ class WeatherPresenter(
         mIsDataFetching = false
     }
 
-    private fun getLocalWeather(position: Int) {
+    fun getLocalWeather(position: Int) {
         val listWeather = repository.getAllLocalWeathers()
         mView?.onProgressLoading(false)
         mView?.onGetSpinnerList(listWeather)

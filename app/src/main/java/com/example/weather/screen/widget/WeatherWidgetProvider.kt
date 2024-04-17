@@ -18,6 +18,7 @@ import com.example.weather.utils.ext.unixTimestampToHourString
 
 class WeatherWidgetProvider : AppWidgetProvider() {
 
+    @Suppress("NestedBlockDepth")
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         val context = context ?: return
 

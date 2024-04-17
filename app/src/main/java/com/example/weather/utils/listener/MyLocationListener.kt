@@ -11,9 +11,15 @@ class MyLocationListener(
         onFetchLocation.onDataLocation(location)
     }
 
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        // TODO implement later
+    }
 
-    override fun onProviderEnabled(provider: String) {}
+    override fun onProviderEnabled(provider: String) {
+        // TODO implement later
+    }
 
-    override fun onProviderDisabled(provider: String) {}
+    override fun onProviderDisabled(provider: String) {
+        // TODO implement later
+    }
 }
