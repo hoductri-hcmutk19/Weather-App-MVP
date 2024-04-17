@@ -20,7 +20,7 @@ class MapPresenter(
     private var mCurrent: Weather? = null
     private var mHourly: Weather? = null
     private var mDaily: Weather? = null
-    private var mIsDataFetching = false
+    var mIsDataFetching = false
 
     override fun setView(view: MapContract.View?) {
         this.mView = view
@@ -137,7 +137,7 @@ class MapPresenter(
         }
     }
 
-    private fun sendToView(current: Weather, hourly: Weather, daily: Weather) {
+    fun sendToView(current: Weather, hourly: Weather, daily: Weather) {
         mView?.onProgressLoading(false)
         current.weatherHourlyList = hourly.weatherHourlyList
         current.weatherDailyList = daily.weatherDailyList
